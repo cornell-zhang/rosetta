@@ -21,8 +21,8 @@ If you use Rosetta in your research, please cite [our FPGA'18 paper][1]:
 ## Introduction 
 -------------------------------------------------------------------------------------------
 Rosetta is a set of realistic benchmarks for software programmable FPGAs. 
-It contains six fully-developed applications from machine learning and image processing fields, where each benchmark consists multiple compute kernels that expose diverse sources of parallelism. 
-These applications are developed under realistic design contraints, and are optimized at both kernel-level and application-level with the advanced features of HLS tools to meet these constraints. 
+It contains six fully-developed applications from machine learning and image/video processing domains, where each benchmark consists multiple compute kernels that expose diverse sources of parallelism. 
+These applications are developed under realistic design constraints, and are optimized at both kernel-level and application-level with the advanced features of HLS tools to meet these constraints. 
 As a result, Rosetta is not only a practical benchmark suite for the HLS community, but also a design tutorial on how to build application-specific FPGA accelerators with state-of-the-art HLS tools and optimizations. 
 We will continue to include more applications and optimize existing benchmarks. 
 

@@ -11,6 +11,9 @@
 // use HLS video library
 #include <hls_video.h>
 
+// use HLS fixed point
+#include "ap_fixed.h"
+
 // define these constants so they can be used in pragma
 const int max_width = MAX_WIDTH; 
 const int default_depth = 1;
@@ -20,9 +23,6 @@ void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_y[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=frame
-  #pragma HLS interface ap_fifo port=gradient_x
-  #pragma HLS interface ap_fifo port=gradient_y
 
   // our own line buffer
   static pixel_t buf[5][MAX_WIDTH];
@@ -113,13 +113,7 @@ void gradient_z_calc(pixel_t frame1[MAX_HEIGHT][MAX_WIDTH],
     pixel_t frame5[MAX_HEIGHT][MAX_WIDTH], 
     pixel_t gradient_z[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=frame1
-  #pragma HLS interface ap_fifo port=frame2
-  #pragma HLS interface ap_fifo port=frame3
-  #pragma HLS interface ap_fifo port=frame4
-  #pragma HLS interface ap_fifo port=frame5
-  #pragma HLS interface ap_fifo port=gradient_z
-
+ 
   const int GRAD_WEIGHTS[] =  {1,-8,0,8,-1};
   GRAD_Z_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
   {
@@ -141,10 +135,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_z[MAX_HEIGHT][MAX_WIDTH],
     gradient_t filt_grad[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=gradient_x
-  #pragma HLS interface ap_fifo port=gradient_y
-  #pragma HLS interface ap_fifo port=gradient_z
-  #pragma HLS interface ap_fifo port=filt_grad
+
   hls::LineBuffer<7,MAX_WIDTH,gradient_t> buf;
 
   const pixel_t GRAD_FILTER[] = {0.0755, 0.133, 0.1869, 0.2903, 0.1869, 0.133, 0.0755};
@@ -153,7 +144,8 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
     GRAD_WEIGHT_Y_INNER: for(int c=0; c<MAX_WIDTH; c++)
     {
       #pragma HLS pipeline II=1
-            
+      #pragma HLS dependence variable=buf inter false
+
       if(r<MAX_HEIGHT)
       {
         buf.shift_pixels_up(c);
@@ -199,8 +191,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
 void gradient_weight_x(gradient_t y_filt[MAX_HEIGHT][MAX_WIDTH],
                        gradient_t filt_grad[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=y_filt
-  #pragma HLS interface ap_fifo port=filt_grad
+
   hls::Window<1,7,gradient_t> buf;
   const pixel_t GRAD_FILTER[] = {0.0755, 0.133, 0.1869, 0.2903, 0.1869, 0.133, 0.0755};
   GRAD_WEIGHT_X_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
@@ -248,8 +239,6 @@ void gradient_weight_x(gradient_t y_filt[MAX_HEIGHT][MAX_WIDTH],
 void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
      outer_t outer_product[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=gradient
-  #pragma HLS interface ap_fifo port=outer_product
     
   OUTER_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
   {
@@ -273,8 +262,6 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
 void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
                      tensor_t tensor_y[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=outer
-  #pragma HLS interface ap_fifo port=tensor_y
   hls::LineBuffer<3,MAX_WIDTH,outer_t> buf;
   const pixel_t TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
   TENSOR_WEIGHT_Y_OUTER: for(int r=0; r<MAX_HEIGHT+1; r++)
@@ -325,8 +312,6 @@ void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
 void tensor_weight_x(tensor_t tensor_y[MAX_HEIGHT][MAX_WIDTH],
                      tensor_t tensor[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=tensor_y
-  #pragma HLS interface ap_fifo port=tensor
   hls::Window<1,3,tensor_t> buf;
   const pixel_t TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
   TENSOR_WEIGHT_X_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
@@ -373,8 +358,6 @@ void tensor_weight_x(tensor_t tensor_y[MAX_HEIGHT][MAX_WIDTH],
 void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
                velocity_t outputs[MAX_HEIGHT][MAX_WIDTH])
 {
-  #pragma HLS interface ap_fifo port=tensors
-
   static pixel_t buf[2];
 
   FLOW_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
@@ -459,12 +442,12 @@ void optical_flow(frames_t   frames[MAX_HEIGHT][MAX_WIDTH],
       // one wide read
       buf = frames[r][c];
       // assign values to the FIFOs
-      frame1_a[r][c] = (pixel_t)(buf(7 ,  0)) / 255.0f;
-      frame2_a[r][c] = (pixel_t)(buf(15,  8)) / 255.0f;
-      frame3_a[r][c] = (pixel_t)(buf(23, 16)) / 255.0f;
-      frame3_b[r][c] = (pixel_t)(buf(23, 16)) / 255.0f;
-      frame4_a[r][c] = (pixel_t)(buf(31, 24)) / 255.0f;
-      frame5_a[r][c] = (pixel_t)(buf(39, 32)) / 255.0f;
+      frame1_a[r][c] = (pixel_t)(buf(7 ,  0)) / 255;
+      frame2_a[r][c] = (pixel_t)(buf(15,  8)) / 255;
+      frame3_a[r][c] = (pixel_t)(buf(23, 16)) / 255;
+      frame3_b[r][c] = (pixel_t)(buf(23, 16)) / 255;
+      frame4_a[r][c] = (pixel_t)(buf(31, 24)) / 255;
+      frame5_a[r][c] = (pixel_t)(buf(39, 32)) / 255;
     }
   }
 

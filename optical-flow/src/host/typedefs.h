@@ -8,12 +8,12 @@
 
 #ifndef __TYPEDEFS_H__
 #define __TYPEDEFS_H__
-
+#include "ap_fixed.h"
 const int MAX_HEIGHT = 436;
 const int MAX_WIDTH = 1024;
 
 // basic typedefs
-typedef float pixel_t;
+typedef ap_fixed<32,18> pixel_t;
 
 typedef struct{
     pixel_t x;

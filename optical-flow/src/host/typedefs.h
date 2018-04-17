@@ -8,13 +8,22 @@
 
 #ifndef __TYPEDEFS_H__
 #define __TYPEDEFS_H__
-#include "ap_fixed.h"
+//#include "ap_fixed.h"
 const int MAX_HEIGHT = 436;
 const int MAX_WIDTH = 1024;
 
 // basic typedefs
-typedef ap_fixed<32,18> pixel_t;
-
+#ifdef SDSOC
+	#include "ap_fixed.h"
+	typedef ap_fixed<32,18> pixel_t;
+#endif
+#ifdef OCL
+	#include "ap_fixed.h"
+	typedef ap_fixed<32,18> pixel_t;
+#endif
+#ifdef SW
+	typedef float pixel_t;
+#endif
 typedef struct{
     pixel_t x;
     pixel_t y;

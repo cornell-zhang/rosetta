@@ -16,7 +16,7 @@ If you use Rosetta in your research, please cite [our FPGA'18 paper][1]:
     year    = {2018},
   }
 ```
-[1]: http://www.csl.cornell.edu/~zhiruz/publications.html 
+[1]: http://www.csl.cornell.edu/~zhiruz/pdfs/rosetta-fpga2018.pdf
 
 ## Introduction 
 -------------------------------------------------------------------------------------------

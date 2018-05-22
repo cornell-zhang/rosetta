@@ -1,0 +1,22 @@
+================================================================
+  Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC
+  Version 2017.2
+  Build 1909853 on Wed Aug 23 11:51:38 MDT 2017
+  Copyright (C) 1986-2017 Xilinx, Inc. All Rights Reserved.
+================================================================
+INFO: [HLS 200-10] Running '/opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'pbc48' on host 'en-ec-zhang-01.coecis.cornell.edu' (Linux_x86_64 version 2.6.32-696.23.1.el6.x86_64) on Tue May 01 16:39:52 EDT 2018
+INFO: [HLS 200-10] On os "CentOS release 6.9 (Final)"
+INFO: [HLS 200-10] In directory '/home/pbc48/rosetta_g/rosetta/optical-flow/hls/host'
+run_hls.tcl can't be opened.
+couldn't read file "run_hls.tcl": no such file or directory
+    while executing
+"source run_hls.tcl"
+    invoked from within
+"hls::main run_hls.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"

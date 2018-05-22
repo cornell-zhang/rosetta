@@ -1,0 +1,15 @@
+INFO: [SIM 2] *************** CSIM start ***************
+INFO: [SIM 4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../imageLib/flowIO.cpp in debug mode
+   Compiling ../../../../../imageLib/RefCntMem.cpp in debug mode
+   Compiling ../../../../../imageLib/ImageIO.cpp in debug mode
+   Compiling ../../../../../imageLib/Image.cpp in debug mode
+   Compiling ../../../../../imageLib/Convolve.cpp in debug mode
+   Compiling ../../../../../imageLib/Convert.cpp in debug mode
+   Compiling ../../../../host/utils.cpp in debug mode
+   Compiling ../../../../host/check_result.cpp in debug mode
+   Compiling ../../../../host/optical_flow_host.cpp in debug mode
+   Compiling ../../../../sdsoc/optical_flow.cpp in debug mode
+   Generating csim.exe
+CRITICAL WARNING: [SIM 100] CSim failed with errors.
+INFO: [SIM 3] *************** CSIM finish ***************

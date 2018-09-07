@@ -17,7 +17,7 @@ const int MAX_WIDTH = 1024;
 // basic typedefs
 #ifdef SDSOC
 	#include "ap_fixed.h"
-	typedef ap_fixed<32,28> pixel_t;
+	typedef ap_fixed<32,13> pixel_t;
 	//typedef float pixel_t;
 #endif
 #ifdef OCL

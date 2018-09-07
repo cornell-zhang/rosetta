@@ -18,13 +18,14 @@
 // define these constants so they can be used in pragma
 const int max_width = MAX_WIDTH; 
 const int default_depth = 1;
-
+const int o_p_shft = 7;
+const int f_c_shft = 8;
 // calculate gradient in x and y directions
 void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_y[MAX_HEIGHT][MAX_WIDTH])
 {
-  printf("in Gradient_xy_calc\n");
+  printf("In gradient_xy_calc\n");
   // our own line buffer
   static pixel_t buf[5][MAX_WIDTH];
   #pragma HLS array_partition variable=buf complete dim=1
@@ -102,8 +103,6 @@ void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
         gradient_x[r-2][c-2] = 0;
         gradient_y[r-2][c-2] = 0;
       }
-      printf("gradient_x:%f\n",(double)gradient_x[r-2][c-2]);
-      printf("gradient_y:%f\n",(double)gradient_y[r-2][c-2]);
     }
   }
 }
@@ -132,7 +131,6 @@ void gradient_z_calc(pixel_t frame1[MAX_HEIGHT][MAX_WIDTH],
       //printf("value is %f\n",(float)(gradient_z[r][c]));
     }
   }
-  printf("Exiting gradient_z_calc\n");
 }
 
 // average the gradient in y direction
@@ -183,7 +181,10 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
           acc.y += buf.getval(i,c).y*GRAD_FILTER[i];
           acc.z += buf.getval(i,c).z*GRAD_FILTER[i];
         }
-        filt_grad[r-3][c] = acc;            
+        filt_grad[r-3][c] = acc;
+	//printf("value of acc.x is %f\n",(float)acc.x);
+	//printf("value of acc.y is %f\n",(float)acc.y);
+	//printf("value of acc.z is %f\n",(float)acc.z);
       }
       else if(r>=2)
       {
@@ -232,6 +233,9 @@ void gradient_weight_x(gradient_t y_filt[MAX_HEIGHT][MAX_WIDTH],
           acc.z += buf.getval(0,i).z*GRAD_FILTER[i];
         }
         filt_grad[r][c-3] = acc;
+	//printf("value of acc.x is %f\n",(float)acc.x);
+        //printf("value of acc.y is %f\n",(float)acc.y);
+        //printf("value of acc.z is %f\n",(float)acc.z);
       }
       else if(c>=3)
       {
@@ -253,12 +257,18 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
       #pragma HLS pipeline II=1
       gradient_t grad = gradient[r][c];
       outer_t out;
-      out.val[0] = grad.x*grad.x;
-      out.val[1] = grad.y*grad.y;
-      out.val[2] = grad.z*grad.z;
-      out.val[3] = grad.x*grad.y;
-      out.val[4] = grad.x*grad.z;
-      out.val[5] = grad.y*grad.z;
+      //out.val[0] = grad.x*grad.x;
+      //out.val[1] = grad.y*grad.y;
+      //out.val[2] = grad.z*grad.z;
+      //out.val[3] = grad.x*grad.y;
+      //out.val[4] = grad.x*grad.z;
+      //out.val[5] = grad.y*grad.z;
+      out.val[0] = (grad.x*grad.x)<<o_p_shft;
+      out.val[1] = (grad.y*grad.y)<<o_p_shft;
+      out.val[2] = (grad.z*grad.z)<<o_p_shft;
+      out.val[3] = (grad.x*grad.y)<<o_p_shft;
+      out.val[4] = (grad.x*grad.z)<<o_p_shft;
+      out.val[5] = (grad.y*grad.z)<<o_p_shft;
       outer_product[r][c] = out;
     }
   }
@@ -371,21 +381,39 @@ void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
 
   FLOW_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
   {
-    printf("In FLOW_OUTER %d\n",r);
     FLOW_INNER: for(int c=0; c<MAX_WIDTH; c++)
     {
       #pragma HLS pipeline II=1
       if(r>=2 && r<MAX_HEIGHT-2 && c>=2 && c<MAX_WIDTH-2)
       {
-        pixel_t denom = tensors[r][c].val[0]*tensors[r][c].val[1]-
-                        tensors[r][c].val[3]*tensors[r][c].val[3];
-	printf("denom=%f\n",(double)denom);
-        buf[0] = (tensors[r][c].val[5]*tensors[r][c].val[3]-
-                 tensors[r][c].val[4]*tensors[r][c].val[1]) / denom;
-        printf("buf[0]=%f\n",(double)buf[0]);
-        buf[1] = (tensors[r][c].val[4]*tensors[r][c].val[3]-
-                 tensors[r][c].val[5]*tensors[r][c].val[0]) / denom;
-        printf("buf[1]=%f\n",(double)buf[1]);
+	//multply both denominator and numerator by 2^n to prevent loss of information
+	//during multiplication. In normal float process, denom gets as small as
+	//10^-10!, way too small for 32-bit fixed point
+        pixel_t denom = (tensors[r][c].val[0]<<f_c_shft)
+	*(tensors[r][c].val[1]<<f_c_shft)-(tensors[r][c].val[3]<<f_c_shft)
+		*(tensors[r][c].val[3]<<f_c_shft);
+	pixel_t numer0 = (tensors[r][c].val[5]<<f_c_shft)
+	*(tensors[r][c].val[3]<<f_c_shft)-(tensors[r][c].val[4]<<f_c_shft)
+		*(tensors[r][c].val[1]<<f_c_shft);
+	pixel_t numer1 = (tensors[r][c].val[4]<<f_c_shft)
+	*(tensors[r][c].val[3]<<f_c_shft)-(tensors[r][c].val[5]<<f_c_shft)
+		*(tensors[r][c].val[0]<<f_c_shft);
+	if(denom != 0)
+        {
+                buf[0] = numer0 / denom;
+	}
+	else
+	{
+		buf[0] = 0;
+	}
+	if(denom != 0)
+        {
+                buf[1] = numer1 / denom;
+        }
+	else
+	{
+		buf[1] = 0;
+	}	
       }
       else
       {
@@ -468,7 +496,6 @@ void optical_flow(frames_t   frames[MAX_HEIGHT][MAX_WIDTH],
   // compute
   gradient_xy_calc(frame3_a, gradient_x, gradient_y);
   gradient_z_calc(frame1_a, frame2_a, frame3_b, frame4_a, frame5_a, gradient_z);
-  printf("Entering gradient_weight_y\n");
   gradient_weight_y(gradient_x, gradient_y, gradient_z, y_filtered);
   gradient_weight_x(y_filtered, filtered_gradient);
   outer_product(filtered_gradient, out_product);

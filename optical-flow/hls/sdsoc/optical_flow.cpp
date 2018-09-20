@@ -7,8 +7,6 @@
 /*===============================================================*/
 
 #include "optical_flow.h"
-//handles float point exceptions
-#include <fenv.h>
 // use HLS video library
 #include <hls_video.h>
 
@@ -18,8 +16,8 @@
 // define these constants so they can be used in pragma
 const int max_width = MAX_WIDTH; 
 const int default_depth = 1;
-const int o_p_shft = 7;
-const int f_c_shft = 8;
+const int o_p_shft = 8;
+const int f_c_shft = 6;
 // calculate gradient in x and y directions
 void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
@@ -52,7 +50,7 @@ void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
       if (r<MAX_HEIGHT && c<MAX_WIDTH)
         smallbuf[4] = frame[r][c];
       else if (c < MAX_WIDTH)
-        smallbuf[4] = 0.0f;
+        smallbuf[4] = 0;
       // update line buffer
       if(r<MAX_HEIGHT && c<MAX_WIDTH)
       {
@@ -121,14 +119,12 @@ void gradient_z_calc(pixel_t frame1[MAX_HEIGHT][MAX_WIDTH],
   {
     GRAD_Z_INNER: for(int c=0; c<MAX_WIDTH; c++)
     {
-      //printf("In Grad_Z_INNER %d\n",c);
       #pragma HLS pipeline II=1
       gradient_z[r][c] = (frame1[r][c]*GRAD_WEIGHTS[0] 
                         + frame2[r][c]*GRAD_WEIGHTS[1]
                         + frame3[r][c]*GRAD_WEIGHTS[2]
                         + frame4[r][c]*GRAD_WEIGHTS[3]
                         + frame5[r][c]*GRAD_WEIGHTS[4])/12;
-      //printf("value is %f\n",(float)(gradient_z[r][c]));
     }
   }
 }
@@ -182,9 +178,6 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
           acc.z += buf.getval(i,c).z*GRAD_FILTER[i];
         }
         filt_grad[r-3][c] = acc;
-	//printf("value of acc.x is %f\n",(float)acc.x);
-	//printf("value of acc.y is %f\n",(float)acc.y);
-	//printf("value of acc.z is %f\n",(float)acc.z);
       }
       else if(r>=2)
       {
@@ -233,9 +226,6 @@ void gradient_weight_x(gradient_t y_filt[MAX_HEIGHT][MAX_WIDTH],
           acc.z += buf.getval(0,i).z*GRAD_FILTER[i];
         }
         filt_grad[r][c-3] = acc;
-	//printf("value of acc.x is %f\n",(float)acc.x);
-        //printf("value of acc.y is %f\n",(float)acc.y);
-        //printf("value of acc.z is %f\n",(float)acc.z);
       }
       else if(c>=3)
       {
@@ -257,12 +247,6 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
       #pragma HLS pipeline II=1
       gradient_t grad = gradient[r][c];
       outer_t out;
-      //out.val[0] = grad.x*grad.x;
-      //out.val[1] = grad.y*grad.y;
-      //out.val[2] = grad.z*grad.z;
-      //out.val[3] = grad.x*grad.y;
-      //out.val[4] = grad.x*grad.z;
-      //out.val[5] = grad.y*grad.z;
       out.val[0] = (grad.x*grad.x)<<o_p_shft;
       out.val[1] = (grad.y*grad.y)<<o_p_shft;
       out.val[2] = (grad.z*grad.z)<<o_p_shft;

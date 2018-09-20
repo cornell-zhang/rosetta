@@ -17,7 +17,8 @@
 // define these constants so they can be used in pragma
 const int max_width = MAX_WIDTH; 
 const int default_depth = 1;
-
+const int o_p_shft = 7;
+const int f_c_shft = 7;
 // calculate gradient in x and y directions
 void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
@@ -50,7 +51,7 @@ void gradient_xy_calc(pixel_t frame[MAX_HEIGHT][MAX_WIDTH],
       if (r<MAX_HEIGHT && c<MAX_WIDTH)
         smallbuf[4] = frame[r][c];
       else if (c < MAX_WIDTH)
-        smallbuf[4] = 0.0f;
+        smallbuf[4] = 0;
       // update line buffer
       if(r<MAX_HEIGHT && c<MAX_WIDTH)
       {
@@ -247,12 +248,12 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
       #pragma HLS pipeline II=1
       gradient_t grad = gradient[r][c];
       outer_t out;
-      out.val[0] = grad.x*grad.x;
-      out.val[1] = grad.y*grad.y;
-      out.val[2] = grad.z*grad.z;
-      out.val[3] = grad.x*grad.y;
-      out.val[4] = grad.x*grad.z;
-      out.val[5] = grad.y*grad.z;
+      out.val[0] = (grad.x*grad.x<<o_p_shft);
+      out.val[1] = (grad.y*grad.y<<o_p_shft);
+      out.val[2] = (grad.z*grad.z<<o_p_shft);
+      out.val[3] = (grad.x*grad.y<<o_p_shft);
+      out.val[4] = (grad.x*grad.z<<o_p_shft);
+      out.val[5] = (grad.y*grad.z<<o_p_shft);
       outer_product[r][c] = out;
     }
   }
@@ -367,22 +368,42 @@ void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
       #pragma HLS pipeline II=1
       if(r>=2 && r<MAX_HEIGHT-2 && c>=2 && c<MAX_WIDTH-2)
       {
-        pixel_t denom = tensors[r][c].val[0]*tensors[r][c].val[1]-
-                        tensors[r][c].val[3]*tensors[r][c].val[3];
-        buf[0] = (tensors[r][c].val[5]*tensors[r][c].val[3]-
-                 tensors[r][c].val[4]*tensors[r][c].val[1]) / denom;
-        buf[1] = (tensors[r][c].val[4]*tensors[r][c].val[3]-
-                 tensors[r][c].val[5]*tensors[r][c].val[0]) / denom;
-      }
-      else
-      {
-        buf[0] = buf[1] = 0;
-      }
-
-      outputs[r][c].x = buf[0];
-      outputs[r][c].y = buf[1];
-
-    }
+        //multply both denominator and numerator by 2^n to prevent loss of information
+        //during multiplication. In normal float process, denom gets as small as
+        //10^-10!, way too small for 32-bit fixed point
+        	pixel_t denom = (tensors[r][c].val[0]<<f_c_shft)
+        	*(tensors[r][c].val[1]<<f_c_shft)-(tensors[r][c].val[3]<<f_c_shft)
+                	*(tensors[r][c].val[3]<<f_c_shft);
+        	pixel_t numer0 = (tensors[r][c].val[5]<<f_c_shft)
+        	*(tensors[r][c].val[3]<<f_c_shft)-(tensors[r][c].val[4]<<f_c_shft)
+                	*(tensors[r][c].val[1]<<f_c_shft);
+        	pixel_t numer1 = (tensors[r][c].val[4]<<f_c_shft)
+        	*(tensors[r][c].val[3]<<f_c_shft)-(tensors[r][c].val[5]<<f_c_shft)
+                	*(tensors[r][c].val[0]<<f_c_shft);
+        	if(denom != 0)
+        	{
+            		buf[0] = numer0 / denom;
+        	}
+        	else
+        	{      	
+                	buf[0] = 0;
+        	}
+        	if(denom != 0)
+        	{     
+                	buf[1] = numer1 / denom;
+        	}
+        	else
+               	{
+               		buf[1] = 0;
+        	}
+   	}
+       	else
+       	{
+       		buf[0] = buf[1] = 0;
+        }
+        outputs[r][c].x = buf[0];
+        outputs[r][c].y = buf[1];
+	}
   }
 }
 

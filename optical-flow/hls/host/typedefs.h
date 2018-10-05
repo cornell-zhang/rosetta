@@ -17,7 +17,11 @@ const int MAX_WIDTH = 1024;
 // basic typedefs
 #ifdef SDSOC
 	#include "ap_fixed.h"
-	typedef ap_fixed<32,12> pixel_t;
+	typedef ap_fixed<8,0> input_t;
+	typedef ap_fixed<32,13> pixel_t;
+	typedef ap_fixed<64,27> outer_pixel_t;
+	typedef ap_fixed<128,56> calc_pixel_t;
+	typedef ap_fixed<64,13> vel_pixel_t;
 	//typedef float pixel_t;
 #endif
 #ifdef OCL
@@ -28,22 +32,22 @@ const int MAX_WIDTH = 1024;
 	typedef float pixel_t;
 #endif
 typedef struct{
-    pixel_t x;
-    pixel_t y;
-    pixel_t z;
+	pixel_t x;
+	pixel_t y;
+	pixel_t z;
 }gradient_t;
 
 typedef struct{
-    pixel_t val[6];
+    outer_pixel_t val[6];
 }outer_t; 
 
 typedef struct{
-    pixel_t val[6];
+    outer_pixel_t val[6];
 }tensor_t;
 
 typedef struct{
-    pixel_t x;
-    pixel_t y;
+    vel_pixel_t x;
+    vel_pixel_t y;
 }velocity_t;
 
 #ifndef SW

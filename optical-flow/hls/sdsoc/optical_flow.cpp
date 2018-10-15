@@ -92,6 +92,7 @@ void gradient_xy_calc(input_t frame[MAX_HEIGHT][MAX_WIDTH],
         }
         gradient_x[r-2][c-2] = x_grad/12;
         gradient_y[r-2][c-2] = y_grad/12;
+	//printf("gradientx = %f\n", (float)gradient_x[r-2][c-2]);
       }
       else if(r>=2 && c>=2)
       {
@@ -150,6 +151,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
         tmp.x = gradient_x[r][c];
         tmp.y = gradient_y[r][c];
         tmp.z = gradient_z[r][c];
+        //printf("tmp = %lf\n", (double)tmp.z);
         buf.insert_bottom_row(tmp,c);
       }
       else
@@ -175,6 +177,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
           acc.z += buf.getval(i,c).z*GRAD_FILTER[i];
         }
         filt_grad[r-3][c] = acc;
+        printf("grad = %lf\n", (double)filt_grad[r-3][c].z);
       }
       else if(r>=2)
       {
@@ -254,6 +257,7 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
       out.val[4] = (x*z);
       out.val[5] = (y*z);
       outer_product[r][c] = out;
+      //printf("out = %lf\n", (double)out.val[0]);
     }
   }
 }
@@ -265,6 +269,7 @@ void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
   printf("In tensor_weight_y\n");
   hls::LineBuffer<3,MAX_WIDTH,outer_t> buf;
   const pixel_t TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
+  //const float TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
   TENSOR_WEIGHT_Y_OUTER: for(int r=0; r<MAX_HEIGHT+1; r++)
   {
     TENSOR_WEIGHT_Y_INNER: for(int c=0; c<MAX_WIDTH; c++)
@@ -296,6 +301,7 @@ void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
         {
           tmp = buf.getval(i,c);
           pixel_t k = TENSOR_FILTER[i];
+	  //float k = TENSOR_FILTER[i];
           TENSOR_WEIGHT_Y_TMP_INNER: for(int component=0; component<6; component++)
           {
             acc.val[component] += tmp.val[component]*k;
@@ -316,6 +322,7 @@ void tensor_weight_x(tensor_t tensor_y[MAX_HEIGHT][MAX_WIDTH],
   printf("In tensor_weight_x\n");
   hls::Window<1,3,tensor_t> buf;
   const pixel_t TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
+  //const float TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
   TENSOR_WEIGHT_X_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
   {
     TENSOR_WEIGHT_X_INNER: for(int c=0; c<MAX_WIDTH+1; c++)
@@ -377,6 +384,7 @@ void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
 	calc_pixel_t t5 = (calc_pixel_t) tensors[r][c].val[4];
 	calc_pixel_t t6 = (calc_pixel_t) tensors[r][c].val[5];
 
+        //printf("t6 = %lf\n", (double)t6);
         calc_pixel_t denom = t1*t2-t4*t4;
 	calc_pixel_t numer0 = t6*t4-t5*t2;
 	calc_pixel_t numer1 = t5*t4-t6*t1;
@@ -467,12 +475,12 @@ void optical_flow(frames_t   frames[MAX_HEIGHT][MAX_WIDTH],
       // one wide read
       buf = frames[r][c];
       // assign values to the FIFOs
-      frame1_a[r][c] = (input_t)((ap_fixed<16,8>)(buf(7 ,  0)) / 255);
-      frame2_a[r][c] = (input_t)((ap_fixed<16,8>)(buf(15,  8)) / 255);
-      frame3_a[r][c] = (input_t)((ap_fixed<16,8>)(buf(23, 16)) / 225);
-      frame3_b[r][c] = (input_t)((ap_fixed<16,8>)(buf(23, 16)) / 255);
-      frame4_a[r][c] = (input_t)((ap_fixed<16,8>)(buf(31, 24)) / 255);
-      frame5_a[r][c] = (input_t)((ap_fixed<16,8>)(buf(39, 32)) / 255);
+      frame1_a[r][c] = ((input_t)(buf(7 ,  0)) >> 8);
+      frame2_a[r][c] = ((input_t)(buf(15,  8)) >> 8);
+      frame3_a[r][c] = ((input_t)(buf(23, 16)) >> 8);
+      frame3_b[r][c] = ((input_t)(buf(23, 16)) >> 8);
+      frame4_a[r][c] = ((input_t)(buf(31, 24)) >> 8);
+      frame5_a[r][c] = ((input_t)(buf(39, 32)) >> 8);
     }
   }
 

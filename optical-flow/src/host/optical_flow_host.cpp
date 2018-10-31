@@ -44,6 +44,7 @@
 
 int main(int argc, char ** argv) 
 {
+  setbuf(stdout, NULL);
   printf("Optical Flow Application\n");
 
   // parse command line arguments
@@ -159,9 +160,10 @@ int main(int argc, char ** argv)
   // sdsoc version host code
   #ifdef SDSOC
     // input and output buffers
-    frames_t frames[MAX_HEIGHT][MAX_WIDTH];
-    velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
+    static frames_t frames[MAX_HEIGHT][MAX_WIDTH];
+    static velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
 
+    printf("packing values...\n");
     // pack the values
     for (int i = 0; i < MAX_HEIGHT; i++) 
     {
@@ -177,9 +179,11 @@ int main(int argc, char ** argv)
     }
 
     // run
+    printf("Starting...\n");
     gettimeofday(&start, NULL);
     optical_flow(frames, outputs);
     gettimeofday(&end, NULL);
+    printf("Done!\n");
 
   #endif
 

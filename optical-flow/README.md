@@ -44,4 +44,4 @@ To run software version, do
 | Benchmark | #LUTs | #FFs | #BRAMs | #DSPs | Runtime (ms) | Throughput |
 |:---------:|:-----:|:----:|:-----:|:------:|:------------:|:----------:|
 |Floating_point|42878|61078|54|454|24.3|41.2 frames/s|
-|Fixed_point|23614|43422|72|392|19.8|50.4 images/s|
+|Fixed_point|27869|47860|72|354|19.7|50.8 images/s|

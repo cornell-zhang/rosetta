@@ -16,7 +16,7 @@ If you use Rosetta in your research, please cite [our FPGA'18 paper][1]:
     year    = {2018},
   }
 ```
-[1]: http://www.csl.cornell.edu/~zhiruz/publications.html 
+[1]: http://www.csl.cornell.edu/~zhiruz/pdfs/rosetta-fpga2018.pdf
 
 ## Introduction 
 -------------------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ For instructions on how to run the applications, please refer to the READMEs in 
 
 ### SDAccel on AWS
 After finishing the required setup steps on AWS, follow above steps with following differences:
-1. Use the option `OCL_TARGET=$AWS_PLATFORM`.
+1. Use the option `OCL_PLATFORM=$AWS_PLATFORM`.
 The environment variable `AWS_PLATFORM` specifies the location of the AWS platform file. 
 2. In `host/typedefs.h` set `TARGET_DEVICE = "xilinx:aws-vu9p-f1:4ddr-xpr-2pr:4.0"`.
 3. When running the application, choose the `.awsxclbin` bitstream file instead of `.xclbin`.

@@ -15,7 +15,7 @@
 
 // define these constants so they can be used in pragma
 const int max_width = MAX_WIDTH; 
-const int default_depth = 1;
+const int default_depth = MAX_WIDTH;
 // calculate gradient in x and y directions
 void gradient_xy_calc(input_t frame[MAX_HEIGHT][MAX_WIDTH],
     pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
@@ -91,7 +91,6 @@ void gradient_xy_calc(input_t frame[MAX_HEIGHT][MAX_WIDTH],
         }
         gradient_x[r-2][c-2] = x_grad/12;
         gradient_y[r-2][c-2] = y_grad/12;
-	//printf("gradientx = %f\n", (float)gradient_x[r-2][c-2]);
       }
       else if(r>=2 && c>=2)
       {
@@ -148,7 +147,6 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
         tmp.x = gradient_x[r][c];
         tmp.y = gradient_y[r][c];
         tmp.z = gradient_z[r][c];
-        //printf("tmp = %lf\n", (double)tmp.z);
         buf.insert_bottom_row(tmp,c);
       }
       else
@@ -175,7 +173,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
         }
         filt_grad[r-3][c] = acc;
       }
-      else if(r>=2)
+      else if(r>=3)
       {
         filt_grad[r-3][c] = acc;
       }
@@ -251,7 +249,6 @@ void outer_product(gradient_t gradient[MAX_HEIGHT][MAX_WIDTH],
       out.val[4] = (x*z);
       out.val[5] = (y*z);
       outer_product[r][c] = out;
-      //printf("out = %lf\n", (double)out.val[0]);
     }
   }
 }
@@ -262,7 +259,6 @@ void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
 {
   hls::LineBuffer<3,MAX_WIDTH,outer_t> buf;
   const pixel_t TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
-  //const float TENSOR_FILTER[] = {0.3243, 0.3513, 0.3243};
   TENSOR_WEIGHT_Y_OUTER: for(int r=0; r<MAX_HEIGHT+1; r++)
   {
     TENSOR_WEIGHT_Y_INNER: for(int c=0; c<MAX_WIDTH; c++)
@@ -294,7 +290,6 @@ void tensor_weight_y(outer_t outer[MAX_HEIGHT][MAX_WIDTH],
         {
           tmp = buf.getval(i,c);
           pixel_t k = TENSOR_FILTER[i];
-	  //float k = TENSOR_FILTER[i];
           TENSOR_WEIGHT_Y_TMP_INNER: for(int component=0; component<6; component++)
           {
             acc.val[component] += tmp.val[component]*k;
@@ -360,42 +355,35 @@ void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
                velocity_t outputs[MAX_HEIGHT][MAX_WIDTH])
 {
   static outer_pixel_t buf[2];
-
   FLOW_OUTER: for(int r=0; r<MAX_HEIGHT; r++)
   {
     FLOW_INNER: for(int c=0; c<MAX_WIDTH; c++)
     {
       #pragma HLS pipeline II=1
+      tensor_t tmp_tensor = tensors[r][c];
       if(r>=2 && r<MAX_HEIGHT-2 && c>=2 && c<MAX_WIDTH-2)
       {
-	calc_pixel_t t1 = (calc_pixel_t) tensors[r][c].val[0];
-	calc_pixel_t t2 = (calc_pixel_t) tensors[r][c].val[1];
-	calc_pixel_t t3 = (calc_pixel_t) tensors[r][c].val[2];
-	calc_pixel_t t4 = (calc_pixel_t) tensors[r][c].val[3];
-	calc_pixel_t t5 = (calc_pixel_t) tensors[r][c].val[4];
-	calc_pixel_t t6 = (calc_pixel_t) tensors[r][c].val[5];
+	      calc_pixel_t t1 = (calc_pixel_t) tmp_tensor.val[0];
+	      calc_pixel_t t2 = (calc_pixel_t) tmp_tensor.val[1];
+	      calc_pixel_t t3 = (calc_pixel_t) tmp_tensor.val[2];
+	      calc_pixel_t t4 = (calc_pixel_t) tmp_tensor.val[3];
+	      calc_pixel_t t5 = (calc_pixel_t) tmp_tensor.val[4];
+	      calc_pixel_t t6 = (calc_pixel_t) tmp_tensor.val[5];
 
-        //printf("t6 = %lf\n", (double)t6);
         calc_pixel_t denom = t1*t2-t4*t4;
-	calc_pixel_t numer0 = t6*t4-t5*t2;
-	calc_pixel_t numer1 = t5*t4-t6*t1;
+	      calc_pixel_t numer0 = t6*t4-t5*t2;
+	      calc_pixel_t numer1 = t5*t4-t6*t1;
 
-	if(denom != 0)
+	      if(denom != 0)
         {
-                buf[0] = numer0 / denom;
-	}
-	else
-	{
-		buf[0] = 0;
-	}
-	if(denom != 0)
-        {
-                buf[1] = numer1 / denom;
-        }
-	else
-	{
-		buf[1] = 0;
-	}	
+          buf[0] = numer0 / denom;
+          buf[1] = numer1 / denom;
+	      } 
+	      else
+	      {
+		      buf[0] = 0;
+		      buf[1] = 0;
+	      }
       }
       else
       {
@@ -448,7 +436,7 @@ void optical_flow(frames_t   frames[MAX_HEIGHT][MAX_WIDTH],
   static input_t frame5_a[MAX_HEIGHT][MAX_WIDTH];
   #pragma HLS STREAM variable=frame5_a depth=default_depth
 
-  // Need to duplicate frame3 for the two calculations
+  //Need to duplicate frame3 for the two calculations
   static input_t frame3_a[MAX_HEIGHT][MAX_WIDTH];
   #pragma HLS STREAM variable=frame3_a depth=default_depth
   static input_t frame3_b[MAX_HEIGHT][MAX_WIDTH];
@@ -473,7 +461,7 @@ void optical_flow(frames_t   frames[MAX_HEIGHT][MAX_WIDTH],
       frame5_a[r][c] = ((input_t)(buf(39, 32)) >> 8);
     }
   }
-
+  //
   // compute
   gradient_xy_calc(frame3_a, gradient_x, gradient_y);
   gradient_z_calc(frame1_a, frame2_a, frame3_b, frame4_a, frame5_a, gradient_z);

@@ -26,8 +26,8 @@ void check_results(velocity_t output[MAX_HEIGHT][MAX_WIDTH], CFloatImage refFlow
     for (int j = 0; j < MAX_WIDTH; j++) 
     {
       #ifdef OCL
-        double out_x = output[i * MAX_WIDTH + j].x.to_double();
-        double out_y = output[i * MAX_WIDTH + j].y.to_double();
+        double out_x = output[i * MAX_WIDTH + j].x;
+        double out_y = output[i * MAX_WIDTH + j].y;
       #else
         double out_x = output[i][j].x.to_double();
         double out_y = output[i][j].y.to_double();

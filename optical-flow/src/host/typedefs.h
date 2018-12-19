@@ -18,9 +18,9 @@ const int MAX_WIDTH = 1024;
 #ifdef SDSOC
 	#include "ap_fixed.h"
 	typedef ap_fixed<17,9> input_t;
-	typedef ap_fixed<34,13> pixel_t;
-	typedef ap_fixed<68,27> outer_pixel_t;
-	typedef ap_fixed<136,56> calc_pixel_t;
+	typedef ap_fixed<32,13> pixel_t;
+	typedef ap_fixed<48,27> outer_pixel_t;
+	typedef ap_fixed<96,56> calc_pixel_t;
 	typedef ap_fixed<32,13> vel_pixel_t;
 	//typedef ap_fixed<16,8> input_t;
         //typedef ap_fixed<32,13> pixel_t;

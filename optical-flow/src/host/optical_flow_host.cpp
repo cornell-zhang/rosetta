@@ -159,8 +159,8 @@ int main(int argc, char ** argv)
   // sdsoc version host code
   #ifdef SDSOC
     // input and output buffers
-    frames_t frames[MAX_HEIGHT][MAX_WIDTH];
-    velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
+    static frames_t frames[MAX_HEIGHT][MAX_WIDTH];
+    static velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
 
     // pack the values
     for (int i = 0; i < MAX_HEIGHT; i++) 
@@ -185,8 +185,8 @@ int main(int argc, char ** argv)
 
   // sw version host code
   #ifdef SW
-    pixel_t frames[5][MAX_HEIGHT][MAX_WIDTH];
-    velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
+    static pixel_t frames[5][MAX_HEIGHT][MAX_WIDTH];
+    static velocity_t outputs[MAX_HEIGHT][MAX_WIDTH];
 
     gettimeofday(&start, NULL);
     // use native C datatype arrays

@@ -187,7 +187,7 @@ void gradient_weight_y(pixel_t gradient_x[MAX_HEIGHT][MAX_WIDTH],
         }
         filt_grad[r-3][c] = acc;            
       }
-      else if(r>=2)
+      else if(r>=3)
       {
         filt_grad[r-3][c] = acc;
       }
@@ -382,14 +382,15 @@ void flow_calc(tensor_t tensors[MAX_HEIGHT][MAX_WIDTH],
     FLOW_INNER: for(int c=0; c<MAX_WIDTH; c++)
     {
       #pragma HLS pipeline II=1
+      tensor_t tmp_tensor = tensors[r][c];
       if(r>=2 && r<MAX_HEIGHT-2 && c>=2 && c<MAX_WIDTH-2)
       {
-        pixel_t denom = tensors[r][c].val[0]*tensors[r][c].val[1]-
-                        tensors[r][c].val[3]*tensors[r][c].val[3];
-        buf[0] = (tensors[r][c].val[5]*tensors[r][c].val[3]-
-                 tensors[r][c].val[4]*tensors[r][c].val[1]) / denom;
-        buf[1] = (tensors[r][c].val[4]*tensors[r][c].val[3]-
-                 tensors[r][c].val[5]*tensors[r][c].val[0]) / denom;
+        pixel_t denom = tmp_tensor.val[0]*tmp_tensor.val[1]-
+                        tmp_tensor.val[3]*tmp_tensor.val[3];
+        buf[0] = (tmp_tensor.val[5]*tmp_tensor.val[3]-
+                 tmp_tensor.val[4]*tmp_tensor.val[1]) / denom;
+        buf[1] = (tmp_tensor.val[4]*tmp_tensor.val[3]-
+                 tmp_tensor.val[5]*tmp_tensor.val[0]) / denom;
       }
       else
       {

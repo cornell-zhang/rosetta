@@ -14,6 +14,11 @@
 #include <time.h>
 #include <sys/time.h>
 
+// other headers
+#include "utils.h"
+#include "typedefs.h"
+#include "check_result.h"
+
 #ifdef OCL
   // opencl harness headers
   #include "CLWorld.h"
@@ -25,22 +30,15 @@
 
 #ifdef SDSOC
   // sdsoc headers
-  #include "sds_lib.h"
+  //#include "sds_lib.h"
   // hardware function declaration
   #include "../sdsoc/optical_flow.h"
 #endif
-
 #ifdef SW
   # include "../sw/optical_flow_sw.h"
 #endif
 
-// here we use an image library to handle file IO
-#include "../../imageLib/imageLib.h"
 
-// other headers
-#include "utils.h"
-#include "typedefs.h"
-#include "check_result.h"
 
 int main(int argc, char ** argv) 
 {
@@ -84,7 +82,6 @@ int main(int argc, char ** argv)
 
   CFloatImage refFlow;
   ReadFlowFile(refFlow, reference_file.c_str());
-
 
   // timers
   struct timeval start, end;
@@ -175,12 +172,13 @@ int main(int argc, char ** argv)
         frames[i][j](63, 40) = 0;  
       }
     }
+    printf("Start!\n");
 
     // run
     gettimeofday(&start, NULL);
     optical_flow(frames, outputs);
+    printf("Almost there!/n");
     gettimeofday(&end, NULL);
-
   #endif
 
   // sw version host code

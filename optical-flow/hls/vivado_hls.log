@@ -1,0 +1,64 @@
+================================================================
+  Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC
+  Version 2017.2
+  Build 1909853 on Wed Aug 23 11:51:38 MDT 2017
+  Copyright (C) 1986-2017 Xilinx, Inc. All Rights Reserved.
+================================================================
+INFO: [HLS 200-10] Running '/opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'pbc48' on host 'en-ec-zhang-01.coecis.cornell.edu' (Linux_x86_64 version 2.6.32-696.23.1.el6.x86_64) on Sun May 06 10:32:28 EDT 2018
+INFO: [HLS 200-10] On os "CentOS release 6.9 (Final)"
+INFO: [HLS 200-10] In directory '/home/pbc48/rosetta_g/rosetta/optical-flow/hls'
+INFO: [HLS 200-10] Opening and resetting project '/home/pbc48/rosetta_g/rosetta/optical-flow/hls/test_oflow'.
+INFO: [HLS 200-10] Adding design file 'sdsoc/optical_flow.cpp' to the project
+INFO: [HLS 200-10] Adding design file 'sdsoc/optical_flow.h' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/optical_flow_host.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/check_result.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/utils.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/check_result.h' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/utils.h' to the project
+INFO: [HLS 200-10] Adding test bench file 'host/typedefs.h' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/Convert.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/Convolve.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'imageLib/Convolve.h' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/Image.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'imageLib/Image.h' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/ImageIO.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'imageLib/ImageIO.h' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/RefCntMem.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/RefCntMem.h' to the project
+INFO: [HLS 200-10] Adding test bench file '../imageLib/flowIO.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'imageLib/flowIO.h' to the project
+INFO: [HLS 200-10] Adding test bench file 'imageLib/imageLib.h' to the project
+INFO: [HLS 200-10] Opening and resetting solution '/home/pbc48/rosetta_g/rosetta/optical-flow/hls/test_oflow/solution1'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+INFO: [HLS 200-10] Setting target device to 'xc7z020clg484-2'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 7ns.
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../imageLib/flowIO.cpp in debug mode
+   Compiling ../../../../../imageLib/RefCntMem.cpp in debug mode
+   Compiling ../../../../../imageLib/ImageIO.cpp in debug mode
+   Compiling ../../../../../imageLib/Image.cpp in debug mode
+   Compiling ../../../../../imageLib/Convolve.cpp in debug mode
+   Compiling ../../../../../imageLib/Convert.cpp in debug mode
+   Compiling ../../../../host/utils.cpp in debug mode
+   Compiling ../../../../host/check_result.cpp in debug mode
+   Compiling ../../../../host/optical_flow_host.cpp in debug mode
+   Compiling ../../../../sdsoc/optical_flow.cpp in debug mode
+   Generating csim.exe
+make: Warning: File `csim.mk' has modification time 6.9 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
+@E Simulation failed.
+ERROR: [SIM 211-100] CSim failed with errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+4
+    while executing
+"source run_hls.tcl"
+    invoked from within
+"hls::main run_hls.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"

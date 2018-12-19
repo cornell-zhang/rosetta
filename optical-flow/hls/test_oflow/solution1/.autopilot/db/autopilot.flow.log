@@ -1,0 +1,253 @@
+INFO: [HLS 200-0] Workspace /home/pbc48/rosetta_g/rosetta/optical-flow/hls/test_oflow/solution1 opened at Sun May 06 10:32:28 EDT 2018
+INFO: [HLS 200-100] Command   open_solution returned 0; 0.04 sec.
+INFO: [HLS 200-100] Execute   set_part zynq 
+INFO: [HLS 200-100] Execute     add_library xilinx/zynq/zynq:xc7z020:clg484:-2 
+INFO: [HLS 200-100] Execute       get_default_platform 
+INFO: [HLS 200-100] Command       get_default_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       license_isbetapart xc7z020 
+INFO: [HLS 200-100] Command       license_isbetapart returned 1; 0.02 sec.
+INFO: [HLS 200-100] Execute       open_platform DefaultPlatform 
+INFO: [HLS 200-100] Command       open_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       import_lib /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/zynq 
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx.lib 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/xilinx_interface.lib 
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/plb46.lib 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/fsl.lib 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/axi4.lib 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/maxi.lib 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/saxilite.lib 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command           ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/dsp48.lib 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/xfft.lib 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/dds_compiler.lib 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/xfir.lib 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.03 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_old.lib 
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_vivado.lib 
+INFO: [HLS 200-100] Command         ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx.hlp 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/target_info.tcl 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/xilinx_interface.hlp 
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/maxi.hlp 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/saxilite.hlp 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command           ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/dsp48.hlp 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.02 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/dsp48e1.hlp 
+INFO: [HLS 200-100] Command         ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute         get_default_platform 
+INFO: [HLS 200-100] Command         get_default_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute         config_chip_info -quiet -resource  {SLICE 13300}  {LUT 53200}     {FF 106400} {DSP48E 220}   {BRAM 280}  
+INFO: [HLS 200-100] Command         config_chip_info returned 0; 0 sec.
+INFO: [HLS 200-100] Execute         config_chip_info -quiet -speed medium 
+INFO: [HLS 200-100] Command         config_chip_info returned 0; 0 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx.hlp 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/target_info.tcl 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/xilinx_interface.hlp 
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/maxi.hlp 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/saxilite.hlp 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/dsp48.hlp 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.02 sec.
+INFO: [HLS 200-100] Command       import_lib returned 0; 0.08 sec.
+INFO: [HLS 200-100] Execute       source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/zynq.gen 
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/virtex.gen 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx.gen 
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/plb46.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/fsl.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/axi4.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/nativeAXI4.gen 
+INFO: [HLS 200-100] Execute               source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/saxilite.gen 
+INFO: [HLS 200-100] Command               ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute               source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/maxi.gen 
+INFO: [HLS 200-100] Command               ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.02 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/scripts/xilinxcoregen.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.02 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/XilEDKCoreGen.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/util.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/xfir.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/xfft.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.13 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/ip/dds_compiler.gen 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command           ap_source returned 0; 0.22 sec.
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/dsp48.gen 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.22 sec.
+INFO: [HLS 200-100] Command       ap_source returned 0; 0.22 sec.
+INFO: [HLS 200-100] Execute       get_default_platform 
+INFO: [HLS 200-100] Command       get_default_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       config_chip_info -quiet -resource  {SLICE 13300}  {LUT 53200}     {FF 106400} {DSP48E 220}   {BRAM 280}  
+INFO: [HLS 200-100] Command       config_chip_info returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       config_chip_info -quiet -speed medium 
+INFO: [HLS 200-100] Command       config_chip_info returned 0; 0 sec.
+INFO: [HLS 200-100] Command     add_library returned 0; 0.34 sec.
+INFO: [HLS 200-100] Execute     add_library xilinx/zynq/zynq_fpv6 
+INFO: [HLS 200-100] Execute       get_default_platform 
+INFO: [HLS 200-100] Command       get_default_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       open_platform DefaultPlatform 
+INFO: [HLS 200-100] Command       open_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Execute       import_lib /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/zynq_fpv6 
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_fpv7.lib 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_hp.lib 
+INFO: [HLS 200-100] Command           ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_fpv.hlp 
+INFO: [HLS 200-100] Execute           source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx.hlp 
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/target_info.tcl 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/xilinx_interface.hlp 
+INFO: [HLS 200-100] Execute               source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/maxi.hlp 
+INFO: [HLS 200-100] Command               ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute               source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/interface/saxilite.hlp 
+INFO: [HLS 200-100] Command               ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command             ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute             source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/dsp48.hlp 
+INFO: [HLS 200-100] Command             ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command           ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.02 sec.
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/zynq_hp.hlp 
+INFO: [HLS 200-100] Command         ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command       import_lib returned 0; 0.06 sec.
+INFO: [HLS 200-100] Execute       source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/zynq/zynq_fpv6.gen 
+INFO: [HLS 200-100] Execute         source /opt/xilinx/Xilinx_SDx_2017.2_sdx_0823_1/SDx/2017.2/Vivado_HLS/common/technology/xilinx/common/xilinx_fpv6.gen 
+INFO: [HLS 200-100] Command         ap_source returned 0; 0 sec.
+INFO: [HLS 200-100] Command       ap_source returned 0; 0.01 sec.
+INFO: [HLS 200-100] Command     add_library returned 0; 0.07 sec.
+INFO: [HLS 200-10] Setting target device to 'xc7z020clg484-2'
+INFO: [HLS 200-100] Execute     get_default_platform 
+INFO: [HLS 200-100] Command     get_default_platform returned 0; 0 sec.
+INFO: [HLS 200-100] Command   set_part returned 0; 0.49 sec.
+INFO: [HLS 200-100] Execute   create_clock -period 7 
+INFO: [HLS 200-100] Execute     config_clock -quiet -name default -period 7 -default=false 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 7ns.
+INFO: [HLS 200-100] Command     config_clock returned 0; 0 sec.
+INFO: [HLS 200-100] Command   create_clock returned 0; 0 sec.
+INFO: [HLS 200-100] Execute   csim_design -argv -p /home/pbc48/rosetta_g/rosetta/optical-flow/datasets/sintel_alley -o out.flo 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/imageLib.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/imageLib.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/flowIO.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/flowIO.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/flowIO.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/flowIO.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/RefCntMem.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/RefCntMem.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/RefCntMem.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/RefCntMem.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/ImageIO.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/ImageIO.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/ImageIO.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/ImageIO.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/Image.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/Image.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Image.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Image.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/Convolve.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/imageLib/Convolve.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Convolve.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Convolve.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Convert.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/imageLib/Convert.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/typedefs.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/typedefs.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/utils.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/utils.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/check_result.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0.01 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/check_result.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/utils.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/utils.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/check_result.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/check_result.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/optical_flow_host.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/host/optical_flow_host.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/sdsoc/optical_flow.h 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/sdsoc/optical_flow.h 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_encrypted /home/pbc48/rosetta_g/rosetta/optical-flow/hls/sdsoc/optical_flow.cpp 
+INFO: [HLS 200-100] Command     is_encrypted returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     is_xip /home/pbc48/rosetta_g/rosetta/optical-flow/hls/sdsoc/optical_flow.cpp 
+INFO: [HLS 200-100] Command     is_xip returned 0; 0 sec.
+INFO: [HLS 200-100] Execute     source run_sim.tcl 
+@E Simulation failed.
+INFO: [HLS 200-100] Command     ap_source returned 1; 35.86 sec.
+ERROR: [SIM 211-100] CSim failed with errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-100] Command   csim_design returned 2; 203.35 sec.
+INFO: [HLS 200-100] Command ap_source returned 1; 204.14 sec.
+4
+    while executing
+"source run_hls.tcl"
+    invoked from within
+"hls::main run_hls.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"
+INFO: [HLS 200-100] Execute cleanup_all 
+INFO: [HLS 200-100] Command cleanup_all returned 0; 0 sec.

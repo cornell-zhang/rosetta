@@ -177,7 +177,6 @@ int main(int argc, char ** argv)
     // run
     gettimeofday(&start, NULL);
     optical_flow(frames, outputs);
-    printf("Almost there!/n");
     gettimeofday(&end, NULL);
   #endif
 

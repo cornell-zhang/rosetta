@@ -92,7 +92,7 @@ The code for your target platform can be found from the SDAccel user guide, or a
 SDAccel also supports using custom platforms which are not integrated yet. 
 A platform specification file (usually has the extension `.xpfm`) is needed to describe the target platform. 
 2. Go into any benchmark folder.
-3. To compile for software emulation and get a quick latency estimate, do `make ocl TARGET=sw_emu`. 
+3. To compile for software emulation and get a quick latency estimate, do `make ocl OCL_TARGET=sw_emu`. 
 The report `system_estimate.xtxt` shows latency and resource estimate after high-level synthesis. 
 If only a software model is needed, comment out `--report estimate` from the local makefile. 
 Compilation time will significantly decrease. 

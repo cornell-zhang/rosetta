@@ -58,7 +58,7 @@ OCL_HARNESS_SRC_H   = $(OCL_HARNESS_DIR)/CLKernel.h   $(OCL_HARNESS_DIR)/CLMemOb
 OCL_HOST_FLAGS = -DOCL -g -lxilinxopencl -I$(OPENCL_INC) $(HOST_INC) -L$(OPENCL_LIB) $(HOST_LIB) -I$(OCL_HARNESS_DIR)
 
 # xclbin compilation flags
-XCLBIN_FLAGS = -s -t $(OCL_TARGET) -g 
+XCLBIN_FLAGS = -s -t $(OCL_TARGET) -g -DOCL
 
 ifneq ($(KERNEL_TYPE),ocl)
   XCLBIN_FLAGS += --kernel $(KERNEL_NAME)

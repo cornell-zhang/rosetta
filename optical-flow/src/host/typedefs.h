@@ -1,6 +1,6 @@
 /*===============================================================*/
 /*                                                               */
-/*                          kernel.h                             */
+/*                        typedefs.h                             */
 /*                                                               */
 /*        Defines types and constants for host function          */
 /*                                                               */
@@ -12,8 +12,6 @@
 const int MAX_HEIGHT = 436;
 const int MAX_WIDTH = 1024;
 
-#define SDSOC
-
 // basic typedefs
 #ifdef SDSOC
 	#include "ap_fixed.h"
@@ -22,19 +20,19 @@ const int MAX_WIDTH = 1024;
 	typedef ap_fixed<32,27> outer_pixel_t;
 	typedef ap_fixed<64,56> calc_pixel_t;
 	typedef ap_fixed<32,13> vel_pixel_t;
-	//typedef ap_fixed<16,8> input_t;
-        //typedef ap_fixed<32,13> pixel_t;
-        //typedef float outer_pixel_t;
-	//typedef float calc_pixel_t;
-	//typedef float vel_pixel_t;
-	
 #endif
 #ifdef OCL
 	#include "ap_fixed.h"
-	typedef ap_fixed<48,40> pixel_t;
+	typedef ap_fixed<17,9> input_t;
+	typedef ap_fixed<32,13> pixel_t;
+	typedef ap_fixed<32,27> outer_pixel_t;
+	typedef ap_fixed<64,56> calc_pixel_t;
+	typedef ap_fixed<32,13> vel_pixel_t;
 #endif
 #ifdef SW
 	typedef float pixel_t;
+  typedef float outer_pixel_t;
+  typedef float vel_pixel_t;
 #endif
 typedef struct{
 	pixel_t x;

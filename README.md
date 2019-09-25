@@ -26,42 +26,8 @@ These applications are developed under realistic design constraints, and are opt
 As a result, Rosetta is not only a practical benchmark suite for the HLS community, but also a design tutorial on how to build application-specific FPGA accelerators with state-of-the-art HLS tools and optimizations. 
 We will continue to include more applications and optimize existing benchmarks. 
 
-For each Rosetta benchmark, we provide an unoptimized software version which does not use any HLS-specific optimization, and optimized versions targeting cloud and embedded FPGA platforms. 
-Rosetta currently supports Xilinx SDx 2017.1, which combines the previous Xilinx SDAccel and Xilinx SDSoC development environments. 
-SDAccel is used for cloud FPGA platforms, and SDSoC is used for embedded FPGA platforms. 
-Our designs have been tested on the AWS f1.2xlarge instance and a local ZC706 evaluation kit. Major results are as follows. 
-For more results please refer to [our FPGA'18 paper][1]. 
-
-### Rosetta results on ZC706
-
-| Benchmark | #LUTs | #FFs | #BRAMs | #DSPs | Runtime (ms) | Throughput |
-|:---------:|:-----:|:----:|:-----:|:------:|:------------:|:----------:|
-|3D Rendering|8893|12471|48|11|4.7|213 frames/s|
-|Digit Recognition<sup>1</sup>|41238|26468|338|1|10.6|189k digits/s|
-|Spam Filtering<sup>2</sup>|12678|22134|69|224|60.8|370k samples/s|
-|Optical Flow|42878|61078|54|454|24.3|41.2 frames/s|
-|BNN<sup>3</sup>|46899|46760|102|4|4995.2|200 images/s|
-|Face Detection|62688|83804|121|79|33.0|30.3 frames/s|
-
-1: K=3, `PAR_FACTOR`=40.
-
-2: Five epochs, `PAR_FACTOR`=32, `VDWIDTH`=64.
-
-3: Eight convolvers, 1000 test images.
- 
-### Rosetta results on AWS F1
-
-| Benchmark | #LUTs | #FFs | #BRAMs | #DSPs | Runtime (ms) | Throughput | Performance-cost Ratio | 
-|:---------:|:-----:|:----:|:-----:|:------:|:------------:|:----------:|:----------------------:|
-|3D Rendering|6763|7916|36|11|4.4|227 frames/s|496k frames/$|
-|Digit Recognition<sup>1</sup>|39971|33853|207|0|11.1|180k digits/s|393M digits/$|
-|Spam Filtering<sup>2</sup>|7207|17434|90|224|25.1|728k samples/s|1.6G samples/$|
-|Optical Flow|38094|63438|55|484|8.4|119 frames/s|260k frames/$|
-|Face Detection|48217|54206|92|72|21.5|46.5 frames/s|101k frames/$|
-
-1: K=3, `PAR_FACTOR`=40.
-
-2: Five epochs, `PAR_FACTOR`=32, `VDWIDTH`=512.
+This branch contains the versions of the applications that are easy to run with Vivado HLS. For 
+more results on actual hardware please refer to the master branch for details. 
 
 ## Applications
 -------------------------------------------------------------------------------------------
@@ -77,53 +43,24 @@ For more results please refer to [our FPGA'18 paper][1].
 
 ## Code Structure
 -------------------------------------------------------------------------------------------
-The `harness` directory contains the wrapper code for OpenCL APIs, as well as the main makefile. 
-The `src` directory contains the source code for CPU host function (`host`), software implementation (`sw`), sdsoc hardware function implementation (`sdsoc`), and sdaccel hardware function implementation (`ocl`).
-Each benchmark has its own makefile specifying the paths to necessary source files. 
+In this branch, each directory contains all design source files, datasets, as well as the `.tcl`
+files used for Vivado HLS. There are two `.tcl` files: `user_interface.tcl` allows the user to 
+specify the source and testbench files, apply additional applications, and specify the command line
+arguments for simulation. `run.tcl` is the main file that Vivado HLS uses. 
  
 ## Usage
 -------------------------------------------------------------------------------------------
-### BNN
-The `BNN` folder is currently a copy of the original [BNN repo][2] by Zhao et.al. For instructions on how to simulate and compile the design please refer to the README file inside the folder. 
+To run C software simulation, high-level synthesis, and C-RTL co-simulation, please go into the 
+application directory of interest, and run 
+```
+vivado_hls -f run.tcl
+```
+*For BNN, please first go into* `cpp/minizip`*, run* `make`*, go into* `cpp/accel`*,then run*
+```
+vivado_hls -f hls.tcl
+```
 
-### SDAccel compilation steps:
-1. Figure out your target platform. SDAccel only supports a limited number of platforms. 
-The code for your target platform can be found from the SDAccel user guide, or any other materials provided by the platform vendor. 
-SDAccel also supports using custom platforms which are not integrated yet. 
-A platform specification file (usually has the extension `.xpfm`) is needed to describe the target platform. 
-2. Go into any benchmark folder.
-3. To compile for software emulation and get a quick latency estimate, do `make ocl OCL_TARGET=sw_emu`. 
-The report `system_estimate.xtxt` shows latency and resource estimate after high-level synthesis. 
-If only a software model is needed, comment out `--report estimate` from the local makefile. 
-Compilation time will significantly decrease. 
-4. To compile for hardware emulation, do `make ocl OCL_TARGET=hw_emu`.
-5. To compile for bitstream and actually execute on the board, do `make ocl OCL_TARGET=hw`.
-6. Target platform can be specified with the `OCL_DEVICE` variable. 
-Default is Alpha Data 7v3 board. 
-For example, to target the Alpha Data KU3 board and generate bitstream, do 
-`make ocl OCL_TARGET=hw OCL_DEVICE=xilinx:adm-pcie-ku3:2ddr-xpr:4.0`. 
-To use a custom platform, specify its path with the `OCL_PLATFORM` variable. 
-For example, to generate bitstream for a custom platform, do 
-`make ocl OCL_TARGET=hw OCL_PLATFORM=<path_to_custom_platform_xfpm_file>`. 
-Also remember to change the target device string in `host/typedefs.h`. 
-7. Please refer to SDAccel user guide for instructions on running simulations. 
-For instructions on how to run the applications, please refer to the READMEs in the benchmark folders. 
+*Notice that for Spam Filtering and Optical Flow, please modify the simulation arguments in*
+`user_interface.tcl` *and change the path to the dataset in the last line. *
 
-### SDAccel on AWS
-After finishing the required setup steps on AWS, follow above steps with following differences:
-1. Use the option `OCL_PLATFORM=$AWS_PLATFORM`.
-The environment variable `AWS_PLATFORM` specifies the location of the AWS platform file. 
-2. In `host/typedefs.h` set `TARGET_DEVICE = "xilinx:aws-vu9p-f1:4ddr-xpr-2pr:4.0"`.
-3. When running the application, choose the `.awsxclbin` bitstream file instead of `.xclbin`.
 
-### SDSoC compilation steps:
-1. Go into any benchmark folder. 
-2. Do `make sdsoc`.
-3. The target platform is now hard-coded in the makefiles. All benchmarks currently target the ZC706 platform. 
-
-### Software compilation steps:
-1. Go into any benchmark folder. 
-2. Do `make sw`. 
-
-### Run the applications:
-Please refer to the README files in the corresponding application folder for instructions. 

@@ -61,6 +61,6 @@ vivado_hls -f hls.tcl
 ```
 
 *Notice that for Spam Filtering and Optical Flow, please modify the simulation arguments in*
-`user_interface.tcl` *and change the path to the dataset in the last line. *
+`user_interface.tcl` *and change the path to the dataset in the last line.*
 
 

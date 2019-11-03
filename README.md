@@ -134,5 +134,5 @@ Please refer to the README files in the corresponding application folder for ins
 
 ## Find compatible AMI on AWS 
 -------------------------------------------------------------------------------------------
-Our repo now supports the latest version of the AWS FPGA AWI. Please try it out. Bug reports are
+Our repo now supports the latest version of the AWS FPGA AWI (version 1.7.0). Please try it out. Bug reports are
 welcome. 

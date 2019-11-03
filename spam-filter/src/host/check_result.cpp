@@ -6,7 +6,7 @@
 /*                                                               */
 /*===============================================================*/
 
-#include <cstdio>
+#include <fstream>
 #include "typedefs.h"
 
 // data structure only used in this file
@@ -84,54 +84,61 @@ double computeErrorRate(
 // check results
 void check_results(FeatureType* param_vector, DataType* data_points, LabelType* labels)
 {
+  std::ofstream ofile;
+  ofile.open("output.txt");
+  if (ofile.is_open())
+  {
+    ofile << "\nmain parameter vector: \n";
+    for(int i = 0; i < 30; i ++ )
+    #ifndef SW
+      ofile << "m[" << i << "]: " << param_vector[i].to_float() << " | ";
+    #else
+      ofile << "m[" << i << "]: " << param_vector[i] << " | ";
+    #endif
+    ofile << std::endl;
 
-  printf("\nmain parameter vector: \n");
-  for(int i = 0; i < 30; i ++ )
-  #ifndef SW
-    printf("m[%d]: %f | ", i, param_vector[i].to_float());
-  #else
-    printf("m[%d]: %f | ", i, param_vector[i]);
-  #endif
-  printf("\n");
+    // Initialize benchmark variables
+    double training_tpr = 0.0;
+    double training_fpr = 0.0;
+    double training_error = 0.0;
+    double testing_tpr = 0.0;
+    double testing_fpr = 0.0;
+    double testing_error = 0.0;
 
-  // Initialize benchmark variables
-  double training_tpr = 0.0;
-  double training_fpr = 0.0;
-  double training_error = 0.0;
-  double testing_tpr = 0.0;
-  double testing_fpr = 0.0;
-  double testing_error = 0.0;
+    // Get Training error
+    DataSet training_set;
+    training_set.data_points = data_points;
+    training_set.labels = labels;
+    training_set.num_data_points = NUM_TRAINING;
+    training_set.num_features = NUM_FEATURES;
+    training_set.parameter_vector = param_vector;
+    computeErrorRate(training_set, training_tpr, training_fpr, training_error);
 
-  // Get Training error
-  DataSet training_set;
-  training_set.data_points = data_points;
-  training_set.labels = labels;
-  training_set.num_data_points = NUM_TRAINING;
-  training_set.num_features = NUM_FEATURES;
-  training_set.parameter_vector = param_vector;
-  computeErrorRate(training_set, training_tpr, training_fpr, training_error);
+    // Get Testing error
+    DataSet testing_set;
+    testing_set.data_points = &data_points[NUM_FEATURES * NUM_TRAINING];
+    testing_set.labels = &labels[NUM_TRAINING];
+    testing_set.num_data_points = NUM_TESTING;
+    testing_set.num_features = NUM_FEATURES;
+    testing_set.parameter_vector = param_vector;
+    computeErrorRate(testing_set, testing_tpr, testing_fpr, testing_error);
 
-  // Get Testing error
-  DataSet testing_set;
-  testing_set.data_points = &data_points[NUM_FEATURES * NUM_TRAINING];
-  testing_set.labels = &labels[NUM_TRAINING];
-  testing_set.num_data_points = NUM_TESTING;
-  testing_set.num_features = NUM_FEATURES;
-  testing_set.parameter_vector = param_vector;
-  computeErrorRate(testing_set, testing_tpr, testing_fpr, testing_error);
+    training_tpr *= 100.0;
+    training_fpr *= 100.0;
+    training_error *= 100.0;
+    testing_tpr *= 100.0;
+    testing_fpr *= 100.0;
+    testing_error *= 100.0;
 
-  training_tpr *= 100.0;
-  training_fpr *= 100.0;
-  training_error *= 100.0;
-  testing_tpr *= 100.0;
-  testing_fpr *= 100.0;
-  testing_error *= 100.0;
-
-  printf("+-----------+-----------+-------------+----------+----------+------------+\n");
-  printf("| Train TPR | Train FPR | Train Error | Test TPR | Test FPR | Test Error |\n");
-  printf("+-----------+-----------+-------------+----------+----------+------------+\n");
-  printf("|   %5.2f   |   %5.2f   |    %5.2f    |  %5.2f   |  %5.2f   |   %5.2f    |\n", training_tpr, 
-         training_fpr, training_error, testing_tpr, testing_fpr, testing_error);
-  printf("+-----------+-----------+-------------+----------+----------+------------+\n");
-
+    ofile << "Training TPR: " << training_tpr << std::endl; 
+    ofile << "Training FPR: " << training_fpr << std::endl; 
+    ofile << "Training Error: " << training_error << std::endl; 
+    ofile << "Testing TPR: " << testing_tpr << std::endl; 
+    ofile << "Testing FPR: " << testing_fpr << std::endl; 
+    ofile << "Testing Error: " << testing_error << std::endl; 
+  }
+  else
+  {
+    std::cout << "Failed to create output file!" << std::endl;
+  }
 }

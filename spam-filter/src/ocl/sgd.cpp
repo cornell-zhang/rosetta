@@ -6,8 +6,8 @@
 /*                                                               */
 /*===============================================================*/
 
-#include "../host/typedefs.h"
-#include "lut.h"
+#include "host/typedefs.h"
+#include "ocl/lut.h"
 
 // Function to compute the dot product of data (feature) vector and parameter vector
 FeatureType dotProduct(FeatureType param[NUM_FEATURES],

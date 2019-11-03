@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <string>
 #include <cmath>
+#include <fstream>
 
 #include "typedefs.h"
 #include "../../imageLib/imageLib.h"
@@ -80,6 +81,16 @@ void check_results(velocity_t output[MAX_HEIGHT][MAX_WIDTH], CFloatImage refFlow
   }
 
   double avg_error = accum_error / num_pix;
-  printf("Average error: %lf degrees\n", avg_error);
+  std::ofstream ofile;
+  ofile.open("output.txt");
+  if (ofile.is_open())
+  {
+    ofile << "Average error: " << avg_error << " degrees" << std::endl;
+    ofile.close();
+  }
+  else
+  {
+    std::cout << "Failed to create output file!" << std::endl;
+  }
 
 }

@@ -106,8 +106,12 @@ To use a custom platform, specify its path with the `OCL_PLATFORM` variable.
 For example, to generate bitstream for a custom platform, do 
 `make ocl OCL_TARGET=hw OCL_PLATFORM=<path_to_custom_platform_xfpm_file>`. 
 Also remember to change the target device string in `host/typedefs.h`. 
-7. Please refer to SDAccel user guide for instructions on running simulations. 
-For instructions on how to run the applications, please refer to the READMEs in the benchmark folders. 
+7. To run simulation, please run `make emu_setup OCL_PLATFORM=<path_to_custom_platform_xfpm_file>`
+to create the `.json` file used by the Xilinx OpenCL runtime. Then, set the `XCL_EMULATION_MODE`
+environment variable to `sw_emu` if you want to run software simulation, or `hw_emu` for hardware
+simulation. More details can be found from the Xilinx SDx Command and Utility Reference Guide
+(UG1279). 
+8. For instructions on how to run the applications, please refer to the READMEs in the benchmark folders. 
 
 ### SDAccel on AWS
 After finishing the required setup steps on AWS, follow above steps with following differences:
@@ -130,16 +134,5 @@ Please refer to the README files in the corresponding application folder for ins
 
 ## Find compatible AMI on AWS 
 -------------------------------------------------------------------------------------------
-The repo was open-sourced in February 2018. Since then AWS has updated the FPGA developer AMI several times and migrated to 
-the latest version of SDAccel (now integrated with SDSoC and called SDx). The Makefile structure in the current repo is no
-longer compatible with the latest FPGA developer AMI since some commands in the Makefile are not valid now. We will find a
-time to update the repo and make it compatible with the latest AMI. 
-
-In case you want to use the repo right now but don't want to change the Makefile, one option is to use an older version of
-the FPGA developer AMI. To find it, please follow these steps:
-1. After clicking the "launch instance" button in EC2, search for "FPGA" in AWS marketplace to find the FPGA developer AMI;
-2. The AMI we want to use would be the first match, click on the tiny "previous versions" link next to the stars;
-3. Click on "Continue to Configuration";
-4. Select 1.4.0 for the software version;
-5. Click on "Continue to Launch", and then choose "Launch through EC2";
-6. Configure your instance type, storage, etc. 
+Our repo now supports the latest version of the AWS FPGA AWI. Please try it out. Bug reports are
+welcome. 

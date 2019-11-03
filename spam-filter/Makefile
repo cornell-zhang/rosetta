@@ -7,8 +7,8 @@ HOST_SRC_H   = ./src/host/utils.h ./src/host/check_result.h ./src/host/typedefs.
 DATA         = ./data/*.dat
 
 # Set host code include paths
-HOST_INC = -I$(XILINX_SDX)/Vivado_HLS/include
-HOST_LIB = -L$(XILINX_SDX)/Vivado_HLS/lib
+HOST_INC = -I$(XILINX_VIVADO)/include
+HOST_LIB = -L$(XILINX_VIVADO)/lib
 
 # Set kernel file
 OCL_KERNEL_SRC = ./src/ocl/sgd.cpp
@@ -19,7 +19,7 @@ SW_KERNEL_SRC = ./src/sw/sgd_sw.cpp
 SW_KERNEL_H = ./src/host/typedefs.h
 
 # Set opencl kernel arguments
-OCL_KERNEL_ARGS = -DOCL --max_memory_ports all --report system
+OCL_KERNEL_ARGS = --max_memory_ports all --report system -I$(shell pwd)/src/
 
 #-------------------------
 # Leave the rest to harness

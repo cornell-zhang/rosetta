@@ -46,8 +46,8 @@ else
 endif
 
 # OpenCL runtime Libraries
-OPENCL_INC = $(XILINX_SDX)/runtime/include/1_2
-OPENCL_LIB = $(XILINX_SDX)/runtime/lib/x86_64
+OPENCL_INC = $(XILINX_XRT)/include/
+OPENCL_LIB = $(XILINX_XRT)/lib/
 
 # opencl harness files
 OCL_HARNESS_DIR     = ../harness/ocl_src
@@ -58,7 +58,7 @@ OCL_HARNESS_SRC_H   = $(OCL_HARNESS_DIR)/CLKernel.h   $(OCL_HARNESS_DIR)/CLMemOb
 OCL_HOST_FLAGS = -DOCL -g -lxilinxopencl -I$(OPENCL_INC) $(HOST_INC) -L$(OPENCL_LIB) $(HOST_LIB) -I$(OCL_HARNESS_DIR)
 
 # xclbin compilation flags
-XCLBIN_FLAGS = -s -t $(OCL_TARGET) -g -DOCL
+XCLBIN_FLAGS = -s -t $(OCL_TARGET) -g
 
 ifneq ($(KERNEL_TYPE),ocl)
   XCLBIN_FLAGS += --kernel $(KERNEL_NAME)
@@ -71,13 +71,15 @@ else
 endif
 
 XCLBIN_FLAGS += $(OCL_KERNEL_ARGS)
+#XCLBIN_FLAGS += -I$(BENCHMARK_DIR)
 
 # host exe
 OCL_HOST_EXE        = $(KERNEL_NAME)_host.exe
 
 # Kernel XCLBIN file
 XCLBIN        = $(KERNEL_NAME).$(OCL_TARGET).xclbin
-
+# Kernel XO file
+XO            = $(KERNEL_NAME).$(OCL_TARGET).xo
 # =============================================== SDSoC Platform and Target Settings ============================================== #
 
 # platform
@@ -111,7 +113,7 @@ SW_EXE = $(KERNEL_NAME)_sw.exe
 # we will have 4 top-level rules: ocl, sdsoc, sw and clean
 # default to sw
 
-.PHONY: all ocl sdsoc sw clean
+.PHONY: all ocl sdsoc sw clean emu_setup
 
 all: sw
 
@@ -123,8 +125,17 @@ $(OCL_HOST_EXE): $(HOST_SRC_CPP) $(HOST_SRC_H) $(OCL_HARNESS_SRC_CPP) $(OCL_HARN
 	$(OCL_CXX) $(OCL_HOST_FLAGS) -o $@ $(HOST_SRC_CPP) $(OCL_HARNESS_SRC_CPP) 
 
 # ocl secondary rule: xclbin 
-$(XCLBIN): $(OCL_KERNEL_SRC) $(OCL_KERNEL_H)
-	$(XOCC) $(XCLBIN_FLAGS) -o $@ $(OCL_KERNEL_SRC)
+$(XCLBIN): $(XO)
+	$(XOCC) -l $(XCLBIN_FLAGS) -o $@ $(XO)
+
+# ocl secondary rule: the .xo file
+$(XO): $(OCL_KERNEL_SRC) $(OCL_KERNEL_H)
+	$(XOCC) -c $(XCLBIN_FLAGS) $(OCL_KERNEL_SRC) -o $@ 
+
+# emulation setup
+emu_setup: 
+	emconfigutil --platform $(OCL_PLATFORM) 
+	echo "Please set the environment variable XCL_EMULATION_MODE to either sw_emu or hw_emu!"
 
 # sdsoc rules
 sdsoc: $(SDSOC_EXE)
@@ -144,16 +155,7 @@ sw: $(HOST_SRC_CPP) $(HOST_SRC_H) $(SW_KENREL_SRC) $(SW_KERNEL_H) $(DATA)
 
 # cleanup
 clean:
-	rm -rf *.exe
-	rm -rf *.elf
-	rm -rf *.xclbin
-	rm -rf *.bit
-	rm -rf *.rpt
-	rm -rf system_estimate.xtxt
-	rm -rf _xocc*
-	rm -rf _sds
-	rm -rf sd_card
-	rm -rf .Xil
+	rm -rf *.exe *.elf *.xclbin *.xo *.log *.bit *.rpt _xocc* _sds sd_card _x .run .Xil *.json *.info
 	rm -rf ./src/host/*.d
 	rm -rf ./src/sdsoc/*.o
 	rm -rf ./src/sdsoc/*.d

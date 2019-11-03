@@ -6,10 +6,10 @@
 /*                                                               */
 /*===============================================================*/
 
-#include "../host/typedefs.h"
+#include "host/typedefs.h"
 
 // for banking
-#include "haar_mapping.h"
+#include "ocl/haar_mapping.h"
 
 uint5_t get_bank(uint10_t addr)
 {
@@ -3073,7 +3073,7 @@ int cascadeClassifier
   int stage_sum=0;
 
   /* The rectangle co-ordinagte values for all the classifiers */
-  #include "haar_dataRcc_with_partitioning.h"
+  #include "ocl/haar_dataRcc_with_partitioning.h"
  
   static uint18_t coord[12];
   #pragma HLS array_partition variable=coord complete dim=0
@@ -3328,7 +3328,7 @@ int weakClassifier
 {
   /* weights and threshold values for various classifiers */
                                                                                              
-  #include "haar_dataEWC_with_partitioning.h"
+  #include "ocl/haar_dataEWC_with_partitioning.h"
   # pragma HLS INLINE
 
   int t = tree_thresh_array[haar_counter] * stddev; 

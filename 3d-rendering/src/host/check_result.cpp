@@ -8,6 +8,8 @@
 
 #include <cstdio>
 #include "typedefs.h"
+#include <fstream>
+#include <iostream>
 
 #ifndef SW
 void check_results(bit32* output)
@@ -35,23 +37,31 @@ void check_results(bit8 output[MAX_X][MAX_Y])
   #endif
 
   // print result
-  printf("Image After Rendering: \n");
-  for (int j = MAX_X - 1; j >= 0; j -- )
+  std::ofstream ofile;
+  ofile.open("outputs.txt");
+  if (ofile.is_open())
   {
-    for (int i = 0; i < MAX_Y; i ++ )
+    ofile << "Image After Rendering: \n";
+    for (int j = MAX_X - 1; j >= 0; j -- )
     {
-      int pix;
-      #ifndef SW
-        pix = frame_buffer_print[i][j].to_int();
-      #else
-        pix = output[i][j];
-      #endif
-      if (pix)
-        printf("1");
-      else
-        printf("0");
+      for (int i = 0; i < MAX_Y; i ++ )
+      {
+        int pix;
+        #ifndef SW
+          pix = frame_buffer_print[i][j].to_int();
+        #else
+          pix = output[i][j];
+        #endif
+        if (pix)
+          ofile << "1";
+        else
+          ofile << "0";
+      }
+      ofile << std::endl;
     }
-    printf("\n");
   }
-
+  else
+  {
+    std::cout << "Failed to create output file!" << std::endl;
+  }
 }

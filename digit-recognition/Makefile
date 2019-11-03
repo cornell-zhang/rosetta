@@ -20,7 +20,7 @@ SW_KERNEL_SRC = ./src/sw/digitrec_sw.cpp
 SW_KERNEL_H = ./src/host/typedefs.h ./src/sw/digitrec_sw.h
 
 # Set opencl kernel arguments
-OCL_KERNEL_ARGS = --max_memory_ports all --report system
+OCL_KERNEL_ARGS = --max_memory_ports all --report system -I$(shell pwd)/src/
 
 #-------------------------
 # Leave the rest to harness

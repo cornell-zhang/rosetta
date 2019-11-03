@@ -6,7 +6,7 @@
 /*                                                               */
 /*===============================================================*/
 
-#include "../host/typedefs.h"
+#include "host/typedefs.h"
 
 // ocl wide vector type
 typedef ulong4 WholeDigitType;

@@ -8,8 +8,8 @@ HOST_SRC_H   = ./src/host/utils.h ./src/host/check_result.h ./src/host/typedefs.
 DATA         = 
 
 # Set host code include paths
-HOST_INC = -I$(XILINX_SDX)/Vivado_HLS/include -I./imageLib
-HOST_LIB =  -L$(XILINX_SDX)/Vivado_HLS/lib
+HOST_INC = -I$(XILINX_VIVADO)/include -I./imageLib
+HOST_LIB =  -L$(XILINX_VIVADO)/lib
 
 # Set kernel file
 OCL_KERNEL_SRC = ./src/ocl/optical_flow.cpp
@@ -20,7 +20,7 @@ SW_KERNEL_SRC = ./src/sw/optical_flow_sw.cpp
 SW_KERNEL_H = ./src/host/typedefs.h ./src/sw/optical_flow_sw.h
 
 # Set opencl kernel arguments
-OCL_KERNEL_ARGS = --max_memory_ports all --report system
+OCL_KERNEL_ARGS = --max_memory_ports all --report system -I$(shell pwd)/src/
 
 #-------------------------
 # Leave the rest to harness

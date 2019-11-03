@@ -24,27 +24,22 @@ const int DATA_SET_SIZE = NUM_FEATURES * NUM_SAMPLES;
   #include <string>
   // target device
   // change here to map to a different device
-  const std::string TARGET_DEVICE = "xilinx:aws-vu9p-f1:4ddr-xpr-2pr:4.0";
+  const std::string TARGET_DEVICE = "xilinx_aws-vu9p-f1-04261818_dynamic_5_0";
 #endif
-
-// parameters
-#ifdef OCL
-  // take advantage of the off-chip bandwidth of ocl platforms
-  #define VFTYPE_WIDTH  512
-  #define VDTYPE_WIDTH  512
-#endif
-
-#ifdef SDSOC
-  // embedded platforms have less off-chip bandwidth
-  #define VFTYPE_WIDTH  64
-  #define VDTYPE_WIDTH  64
-#endif
-
-#define PAR_FACTOR 32
 
 // datatypes for accelerator
 
 #ifndef SW
+  #ifdef SDSOC
+    // embedded platforms have less off-chip bandwidth
+    #define VFTYPE_WIDTH  64
+    #define VDTYPE_WIDTH  64
+  #else
+    // take advantage of the off-chip bandwidth of ocl platforms
+    #define VFTYPE_WIDTH  512
+    #define VDTYPE_WIDTH  512
+  #endif
+
   #include "ap_int.h"
   #include "ap_fixed.h"
   // features / parameters
@@ -52,19 +47,19 @@ const int DATA_SET_SIZE = NUM_FEATURES * NUM_SAMPLES;
   #define FTYPE_IWIDTH 13
   typedef ap_fixed<FTYPE_TWIDTH,FTYPE_IWIDTH> FeatureType;
   typedef ap_uint<VFTYPE_WIDTH>               VectorFeatureType;
-  const size_t F_VECTOR_SIZE = VFTYPE_WIDTH / FTYPE_TWIDTH;
+  const unsigned int F_VECTOR_SIZE = VFTYPE_WIDTH / FTYPE_TWIDTH;
   // training data
   #define DTYPE_TWIDTH 16
   #define DTYPE_IWIDTH 4
   typedef ap_fixed<DTYPE_TWIDTH,DTYPE_IWIDTH>  DataType;
   typedef ap_uint<VDTYPE_WIDTH>                VectorDataType;
-  const size_t D_VECTOR_SIZE = VDTYPE_WIDTH / DTYPE_TWIDTH;
+  const unsigned int D_VECTOR_SIZE = VDTYPE_WIDTH / DTYPE_TWIDTH;
   // label
   #define LTYPE_WIDTH   8
   #define VLTYPE_WIDTH  32
   typedef ap_uint<LTYPE_WIDTH>                 LabelType;
   typedef ap_uint<VLTYPE_WIDTH>                VectorLabelType;
-  const size_t L_VECTOR_SIZE = VLTYPE_WIDTH / LTYPE_WIDTH;
+  const unsigned int L_VECTOR_SIZE = VLTYPE_WIDTH / LTYPE_WIDTH;
   
   // datatypes for the LUT
   #define LUTOUT_TWIDTH     12
@@ -83,5 +78,7 @@ const int DATA_SET_SIZE = NUM_FEATURES * NUM_SAMPLES;
   // and uses math functions to compute sigmoid values
   // no need to declare special datatype for sigmoid
 #endif
+
+#define PAR_FACTOR 32
 
 #endif

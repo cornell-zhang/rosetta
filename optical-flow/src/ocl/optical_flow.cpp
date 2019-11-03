@@ -6,7 +6,7 @@
 /*                                                               */
 /*===============================================================*/
 
-#include "../host/typedefs.h"
+#include "host/typedefs.h"
 
 // use HLS video library
 #include <hls_video.h>

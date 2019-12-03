@@ -10,10 +10,9 @@
 #define __TYPEDEFS_H__
 
 // dataset information
-const int NUM_TRAINING  = 18000;
-const int CLASS_SIZE    = 1800;
-const int NUM_TEST      = 2000;
-const int DIGIT_WIDTH   = 4;
+const int MAX_NUM_TRAINING  = 18000;
+const int MAX_NUM_TEST      = 2000;
+const int DIGIT_WIDTH       = 4;
 
 // typedefs
 typedef unsigned long long DigitType;
@@ -25,6 +24,6 @@ typedef ap_uint<256>  WholeDigitType;
 
 // parameters
 #define K_CONST 3
-#define PAR_FACTOR 40
+#define PAR_FACTOR 10
 
 #endif

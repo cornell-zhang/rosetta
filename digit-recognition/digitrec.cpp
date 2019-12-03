@@ -149,42 +149,36 @@ LabelType knn_vote( int knn_set[PAR_FACTOR * K_CONST] )
 // top-level hardware function
 // since AXIDMA_SIMPLE interface does not support arrays with size more than 16384 on interface
 // we call this function twice to transfer data
-void DigitRec(WholeDigitType global_training_set[NUM_TRAINING / 2], WholeDigitType global_test_set[NUM_TEST], LabelType global_results[NUM_TEST], int run) 
+void DigitRec(WholeDigitType global_training_set[MAX_NUM_TRAINING], 
+              WholeDigitType global_test_set[MAX_NUM_TEST], 
+              LabelType global_results[MAX_NUM_TEST], int num_training, int num_test) 
 {
 
   // This array stores K minimum distances per training set
   int knn_set[PAR_FACTOR * K_CONST];
   #pragma HLS array_partition variable=knn_set complete dim=0
 
-  static WholeDigitType training_set [NUM_TRAINING];
+  static WholeDigitType training_set[MAX_NUM_TRAINING];
   // to be used in a pragma
   const int unroll_factor = PAR_FACTOR;
-  #pragma HLS array_partition variable=training_set block factor=unroll_factor dim=0
+  #pragma HLS array_partition variable=training_set block factor=unroll_factor dim=1
 
-  static WholeDigitType test_set     [NUM_TEST];
-  static LabelType results           [NUM_TEST];
+  static WholeDigitType test_set[MAX_NUM_TEST];
+  static LabelType results[MAX_NUM_TEST];
 
-  // the first time, just do data transfer and return
-  if (run == 0)
-  {
-    // copy the training set for the first time
-    for (int i = 0; i < NUM_TRAINING / 2; i ++ )
-      #pragma HLS pipeline
-      training_set[i] = global_training_set[i];
-    return;
-  }
-
-  // for the second time
-  for (int i = 0; i < NUM_TRAINING / 2; i ++ )
+  for (int i = 0; i < MAX_NUM_TRAINING; i ++ )
     #pragma HLS pipeline
-    training_set[i + NUM_TRAINING / 2] = global_training_set[i];
+    training_set[i] = global_training_set[i];
+
   // copy the test set
-  for (int i = 0; i < NUM_TEST; i ++ )
+  for (int i = 0; i < num_test; i ++ )
     #pragma HLS pipeline
     test_set[i] = global_test_set[i];
 
+  int iter_cnt = num_training / PAR_FACTOR - 1;
+
   // loop through test set
-  TEST_LOOP: for (int t = 0; t < NUM_TEST; ++t) 
+  TEST_LOOP: for (int t = 0; t < num_test; ++t) 
   {
     // fetch one instance
     WholeDigitType test_instance = test_set[t];
@@ -197,18 +191,20 @@ void DigitRec(WholeDigitType global_training_set[NUM_TRAINING / 2], WholeDigitTy
       knn_set[i] = 256;
     }
 
-    TRAINING_LOOP : for ( int i = 0; i < NUM_TRAINING / PAR_FACTOR; ++i ) 
+    TRAINING_LOOP : for ( int i = 0; i < MAX_NUM_TRAINING / PAR_FACTOR; ++i ) 
     {
       #pragma HLS pipeline
       LANES : for ( int j = 0; j < PAR_FACTOR; j++ ) 
       {
         #pragma HLS unroll
         // Read a new instance from the training set
-        WholeDigitType training_instance = training_set[j * NUM_TRAINING / PAR_FACTOR + i];
+        WholeDigitType training_instance = training_set[j * MAX_NUM_TRAINING / PAR_FACTOR + i];
 
         // Update the KNN set
         update_knn( test_instance, training_instance, &knn_set[j * K_CONST] );
       }
+      if (i == iter_cnt)
+        break;
     }
     // Compute the final output
     LabelType max_vote = knn_vote(knn_set);
@@ -217,7 +213,7 @@ void DigitRec(WholeDigitType global_training_set[NUM_TRAINING / 2], WholeDigitTy
   }
 
   // copy the results out
-  for (int i = 0; i < NUM_TEST; i ++ )
+  for (int i = 0; i < num_test; i ++ )
     #pragma HLS pipeline
     global_results[i] = results[i];
 

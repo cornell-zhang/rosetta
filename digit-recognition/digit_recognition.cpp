@@ -20,77 +20,53 @@
 // other headers
 #include "typedefs.h"
 #include "check_result.h"
-
-// data
-#include "training_data.h"
-#include "testing_data.h"
+#include "utils.h"
 
 int main(int argc, char ** argv) 
 {
   printf("Digit Recognition Application\n");
 
-  // for this benchmark, data is already included in arrays:
-  //   training_data: contains 18000 training samples, with 1800 samples for each digit class
-  //   testing_data:  contains 2000 test samples
-  //   expected:      contains labels for the test samples
+  std::string training_data_path = "";
+  std::string test_data_path = "";
+  std::string label_path = "";
+  parse_command_line_args(argc, argv, training_data_path, test_data_path, label_path); 
 
   // timers
   struct timeval start, end;
 
   // allocate space for hardware function
-  WholeDigitType* training_in0 = (WholeDigitType*)malloc(sizeof(WholeDigitType) * NUM_TRAINING / 2);
-  WholeDigitType* training_in1 = (WholeDigitType*)malloc(sizeof(WholeDigitType) * NUM_TRAINING / 2);
-  WholeDigitType* test_in      = (WholeDigitType*)malloc(sizeof(WholeDigitType) * NUM_TEST);
-
-  // pack the data into a wide datatype
-  for (int i = 0; i < NUM_TRAINING / 2; i ++ )
-  {
-    training_in0[i].range(63 , 0  ) = training_data[i*DIGIT_WIDTH+0];
-    training_in0[i].range(127, 64 ) = training_data[i*DIGIT_WIDTH+1];
-    training_in0[i].range(191, 128) = training_data[i*DIGIT_WIDTH+2];
-    training_in0[i].range(255, 192) = training_data[i*DIGIT_WIDTH+3];
-  }
-  for (int i = 0; i < NUM_TRAINING / 2; i ++ )
-  {
-    training_in1[i].range(63 , 0  ) = training_data[(NUM_TRAINING / 2 + i)*DIGIT_WIDTH+0];
-    training_in1[i].range(127, 64 ) = training_data[(NUM_TRAINING / 2 + i)*DIGIT_WIDTH+1];
-    training_in1[i].range(191, 128) = training_data[(NUM_TRAINING / 2 + i)*DIGIT_WIDTH+2];
-    training_in1[i].range(255, 192) = training_data[(NUM_TRAINING / 2 + i)*DIGIT_WIDTH+3];
-  }
-
-  for (int i = 0; i < NUM_TEST; i ++ )
-  {
-    test_in[i].range(63 , 0  ) = testing_data[i*DIGIT_WIDTH+0];
-    test_in[i].range(127, 64 ) = testing_data[i*DIGIT_WIDTH+1];
-    test_in[i].range(191, 128) = testing_data[i*DIGIT_WIDTH+2];
-    test_in[i].range(255, 192) = testing_data[i*DIGIT_WIDTH+3];
-  }
-
+  WholeDigitType* training_in = (WholeDigitType*)calloc(MAX_NUM_TRAINING, sizeof(WholeDigitType));
+  WholeDigitType* test_in     = (WholeDigitType*)calloc(MAX_NUM_TEST, sizeof(WholeDigitType));
   // create space for result
-  LabelType* result = (LabelType*)malloc(sizeof(LabelType) * NUM_TEST);
+  LabelType* result = (LabelType*)calloc(MAX_NUM_TEST, sizeof(LabelType));
+  LabelType* expected = (LabelType*)calloc(MAX_NUM_TEST, sizeof(LabelType));
+  printf("Reading training data... \n");
+  int num_train = read_data(training_data_path, training_in);
+  printf("Reading test data... \n");
+  int num_test = read_data(test_data_path, test_in, false);
+  printf("Reading labels... \n");
+  int num_labels = read_labels(label_path, expected);
 
   // run the hardware function
   // first call: transfer data
-  DigitRec(training_in0, test_in, result, 0);
-
-  // second call: execute
+  printf("Running... \n");
   gettimeofday(&start, NULL);
-  DigitRec(training_in1, test_in, result, 1);
+  DigitRec(training_in, test_in, result, num_train, num_test);
   gettimeofday(&end, NULL);
 
   // check results
   printf("Checking results:\n");
-  check_results( result, expected, NUM_TEST );
+  check_results( result, expected, num_test );
     
   // print time
   long long elapsed = (end.tv_sec - start.tv_sec) * 1000000LL + end.tv_usec - start.tv_usec;   
   printf("elapsed time: %lld us\n", elapsed);
 
   // cleanup
-  free(training_in0);
-  free(training_in1);
+  free(training_in);
   free(test_in);
   free(result);
+  free(expected);
 
   return EXIT_SUCCESS;
 }

@@ -14,9 +14,9 @@ set_top ${top_module}
 
 # Use Zynq device
 # zc-706
-set_part {xc7z045ffg900-2}
+set_part {xcku060-ffva1156-2-e}
 # Target clock period is 10ns
-create_clock -period 8
+create_clock -period 4
 
 config_rtl -reset state
 

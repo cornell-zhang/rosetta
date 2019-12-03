@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
   for (int epoch = 0; epoch < NUM_EPOCHS; epoch ++ )
   {
     printf("epoch %d...\n", epoch);
-    SgdLR(data_points_for_accel, labels_for_accel, param_for_accel, (epoch == 0), (epoch == 4));
+    SgdLR(data_points_for_accel, labels_for_accel, param_for_accel, (epoch == 0), (epoch == NUM_EPOCHS - 1));
   }
   gettimeofday(&end, NULL);
 

@@ -14,10 +14,10 @@
 // dataset information
 const int NUM_FEATURES  = 1024;
 const int NUM_SAMPLES   = 5000;
-const int NUM_TRAINING  = 4500;
+const int NUM_TRAINING  = 2000;
 const int NUM_TESTING   = 500;
 const int STEP_SIZE     = 60000; 
-const int NUM_EPOCHS    = 5;
+const int NUM_EPOCHS    = 2;
 const int DATA_SET_SIZE = NUM_FEATURES * NUM_SAMPLES;
   
 #define VFTYPE_WIDTH  64

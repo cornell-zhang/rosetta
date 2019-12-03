@@ -10,4 +10,4 @@ add_files -tb utils.cpp
 # insert optimization directives here if necessary
 
 # define simulation arguments
-set sim_args "-p <absolute_path_to_dataset>"
+set sim_args "-p <path_to_dataset>"

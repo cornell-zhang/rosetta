@@ -5,8 +5,9 @@ set top_module rendering
 add_files rendering.cpp
 add_files -tb 3d_rendering_host.cpp
 add_files -tb check_result.cpp
+add_files -tb utils.cpp
 
 # insert optimization directives here if necessary
 
 # define simulation arguments
-set sim_args " "
+set sim_args "-p <absolute path to data>"

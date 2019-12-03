@@ -1,17 +1,18 @@
 /*===============================================================*/
 /*                                                               */
-/*                         rendering.h                           */
+/*                           utils.h                             */
 /*                                                               */
-/*                 C++ kernel for 3D Rendering                   */
+/*                       Utility functions                       */
 /*                                                               */
 /*===============================================================*/
 
-#ifndef __RENDERING_H__
-#define __RENDERING_H__
-
 #include "typedefs.h"
 
-void rendering(bit32 input[3 * MAX_NUM_TRIS], bit32 output[NUM_FB], int num_3d_triangles);
+void print_usage(char* filename);
 
-#endif
+void parse_command_line_args(
+    int argc,
+    char** argv,
+    std::string& path_to_data);
 
+int read_input(std::string path_to_data, bit32** input);

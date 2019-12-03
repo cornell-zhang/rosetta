@@ -18,42 +18,28 @@
 // other headers
 #include "typedefs.h"
 #include "check_result.h"
-
-// data
-#include "input_data.h"
+#include "utils.h"
 
 int main(int argc, char ** argv) 
 {
   printf("3D Rendering Application\n");
 
-  // for this benchmark, data is included in array triangle_3ds
+  std::string path_to_data("");
+  parse_command_line_args(argc, argv, path_to_data);
+
+  bit32* input;
+  int num_3d_triangles = read_input(path_to_data, &input);
 
   // timers
   struct timeval start, end;
 
   // create space for input and output
-  bit32 *input = (bit32*)malloc(3 * NUM_3D_TRI * sizeof(bit32));
   bit32* output = (bit32*)malloc(NUM_FB * sizeof(bit32));
-
-  // pack input data for better performance
-  for ( int i = 0; i < NUM_3D_TRI; i++)
-  {
-    input[3*i](7,0)     = triangle_3ds[i].x0;
-    input[3*i](15,8)    = triangle_3ds[i].y0;
-    input[3*i](23,16)   = triangle_3ds[i].z0;
-    input[3*i](31,24)   = triangle_3ds[i].x1;
-    input[3*i+1](7,0)   = triangle_3ds[i].y1;
-    input[3*i+1](15,8)  = triangle_3ds[i].z1;
-    input[3*i+1](23,16) = triangle_3ds[i].x2;
-    input[3*i+1](31,24) = triangle_3ds[i].y2;
-    input[3*i+2](7,0)   = triangle_3ds[i].z2;
-    input[3*i+2](31,8)  = 0;
-  }
 
   // run hardware function and time it
 
   gettimeofday(&start, 0);
-  rendering(input, output);
+  rendering(input, output, num_3d_triangles);
   gettimeofday(&end, 0);
 
 

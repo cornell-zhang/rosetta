@@ -15,8 +15,10 @@ const int MAX_Y = 256;
 
 // number of values in frame buffer: 32 bits
 const int NUM_FB = MAX_X * MAX_Y / 4;
-// dataset information 
-const int NUM_3D_TRI = 3192;
+
+// due to the limitation of HLS, we use a fixed-size array as our input
+// the actual number of triangles can be smaller than this
+const int MAX_NUM_TRIS = 4000;
 
 // hls header
 #include "ap_int.h"

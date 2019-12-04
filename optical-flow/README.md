@@ -45,3 +45,20 @@ To run software version, do
 |:---------:|:-----:|:----:|:-----:|:------:|:------------:|:----------:|
 |Floating_point|42878|61078|54|454|24.3|41.2 frames/s|
 |Fixed_point|27869|47860|72|354|19.7|50.8 images/s|
+
+## New Dataset as of 12/03/2019
+We incorporated a new dataset (`datasets/tennis`), which contains five consecutive frames from 
+
+```
+@Article{Bro11a,
+  author       = "T. Brox and J. Malik",
+  title        = "Large displacement optical flow: descriptor matching in variational motion
+estimation",
+  journal      = "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+  number       = "3",
+  volume       = "33",
+  pages        = "500-513",
+  year         = "2011",
+  url          = "http://lmb.informatik.uni-freiburg.de/Publications/2011/Bro11a"
+}
+```

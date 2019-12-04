@@ -16,4 +16,4 @@ add_files -tb ./imageLib/RefCntMem.cpp -cflags "-I./imageLib"
 # insert optimization directives here if necessary
 
 # define simulation arguments
-set sim_args "-p <absolute_path_to_dataset> -o out.flo"
+set sim_args "-p <absolute_path_to_dataset_folder> -o out.flo"

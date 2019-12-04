@@ -11,4 +11,4 @@ add_files -tb utils.cpp
 # insert optimization directives here if necessary
 
 # define simulation arguments
-set sim_args "-o out.pgm"
+set sim_args "-p <path_to_input_data> -o <output_pgm>"

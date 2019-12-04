@@ -2781,7 +2781,7 @@ inline  int  myRound ( float value )
 void face_detect
 
 ( 
-  unsigned char inData[IMAGE_WIDTH],
+  unsigned char inData[IMAGE_HEIGHT][IMAGE_WIDTH],
   int result_x[RESULT_SIZE],
   int result_y[RESULT_SIZE],
   int result_w[RESULT_SIZE],
@@ -2800,25 +2800,15 @@ void face_detect
   int res_size_Scale = 0;
   int *result_size_Scale = &res_size_Scale;
 
-  static int counter = 0;
-  if ( counter < IMAGE_HEIGHT){
-    for( j = 0; j < IMAGE_WIDTH; j++){
-         Data[counter][j] = inData[j];
-    }
-    counter++;
-    if ( counter < IMAGE_HEIGHT ){
-      for ( i = 0; i < RESULT_SIZE; i++){ 
-        result_x[i] = 0;
-        result_y[i] = 0;
-        result_w[i] = 0;
-        result_h[i] = 0;
-      }
-      *result_size = 0; 
-      return ;
+  for (int i = 0; i < IMAGE_HEIGHT; i ++ )
+  {
+    for (int j = 0; j < IMAGE_WIDTH; j ++ )
+    {
+#pragma HLS pipeline II=1
+      Data[i][j] = inData[i][j];
     }
   }
 
-  counter = 0;
   *result_size = 0;
     
   float  scaleFactor = 1.2;

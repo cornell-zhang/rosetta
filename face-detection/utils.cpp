@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <getopt.h>
+#include <fstream>
 
 #include "utils.h"
 
@@ -20,24 +21,24 @@ void print_usage(char* filename)
     printf("  -o [output file]\n");
 }
 
-void parse_sdaccel_command_line_args(
+void parse_command_line_args(
     int argc,
     char** argv,
-    std::string& kernelFile,
-    std::string& outFile) 
+    std::string& outFile, 
+    std::string& image_path) 
 {
 
   int c = 0;
 
-  while ((c = getopt(argc, argv, "f:o:")) != -1) 
+  while ((c = getopt(argc, argv, "p:o:")) != -1) 
   {
     switch (c) 
     {
-      case 'f':
-        kernelFile = optarg;
-        break;
       case 'o':
         outFile = optarg;
+        break;
+      case 'p':
+        image_path = optarg;
         break;
       default:
       {
@@ -48,26 +49,28 @@ void parse_sdaccel_command_line_args(
   } // while args present
 }
 
-void parse_sdsoc_command_line_args(
-    int argc,
-    char** argv,
-    std::string& outFile) 
+void read_input(std::string& image_path, unsigned char Data[IMAGE_HEIGHT][IMAGE_WIDTH])
 {
-
-  int c = 0;
-
-  while ((c = getopt(argc, argv, "o:")) != -1) 
+  std::ifstream infile;
+  infile.open(image_path);
+  if (infile.is_open())
   {
-    switch (c) 
+    for ( int i = 0; i < IMAGE_HEIGHT; i++)
     {
-      case 'o':
-        outFile = optarg;
-        break;
-      default:
+      for (int j = 0; j < IMAGE_WIDTH; j ++ )
       {
-        print_usage(argv[0]);
-        exit(-1);
+        unsigned int pix;
+        infile >> std::hex >> pix;
+        Data[i][j] = (unsigned int)pix;
       }
-    } // matching on arguments
-  } // while args present
+    }
+
+    infile.close();
+  }
+  else
+  {
+    printf("Failed to open data file!\n");
+    exit(-1);
+  }
 }
+

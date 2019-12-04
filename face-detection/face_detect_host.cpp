@@ -19,18 +19,18 @@
 #include "typedefs.h"
 #include "check_result.h"
 
-// data
-#include "image0_320_240.h"
-
 int main(int argc, char ** argv) 
 {
   printf("Face Detection Application\n");
 
-  std::string outFile("");
-  parse_sdsoc_command_line_args(argc, argv, outFile);
+  std::string image_path = "";
+  std::string outFile = "";
+  parse_command_line_args(argc, argv, outFile, image_path);
 
-  // for this benchmark, input data is included in array Data
-  // these are outputs
+  static unsigned char Data[IMAGE_HEIGHT][IMAGE_WIDTH];
+  read_input(image_path, Data);
+
+  // outputs
   int result_x[RESULT_SIZE];
   int result_y[RESULT_SIZE];
   int result_w[RESULT_SIZE];
@@ -40,13 +40,8 @@ int main(int argc, char ** argv)
   // timers
   struct timeval start, end;
 
-  // As the SDSoC generated data motion network does not support sending 320 X 240 images at once
-  // We needed to send all the 240 rows using 240 iterations. The last invokation of detectFaces() does the actual face detection
-  for ( int i = 0; i < IMAGE_HEIGHT-1; i ++ )
-    face_detect(Data[i], result_x, result_y, result_w, result_h, &res_size);
-  
   gettimeofday(&start, 0);
-  face_detect(Data[IMAGE_HEIGHT-1], result_x, result_y, result_w, result_h, &res_size);
+  face_detect(Data, result_x, result_y, result_w, result_h, &res_size);
   gettimeofday(&end, 0);
 
   // check results

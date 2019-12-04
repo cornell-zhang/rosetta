@@ -11,3 +11,4 @@ add_files -tb utils.cpp
 
 # define simulation arguments
 set sim_args "-p <absolute path to data>"
+# example: "-p <your_absolute_path_to_3d_rendering>/data/input_data1"

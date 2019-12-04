@@ -12,3 +12,4 @@ add_files -tb utils.cpp
 
 # define simulation arguments
 set sim_args "-p <path_to_input_data> -o <output_pgm>"
+# example "-p <path_to_face_detection>/data/image0.dat -o out.pgm"

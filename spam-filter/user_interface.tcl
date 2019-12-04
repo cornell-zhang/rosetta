@@ -11,3 +11,4 @@ add_files -tb utils.cpp
 
 # define simulation arguments
 set sim_args "-p <path_to_dataset>"
+# example "-p <path_to_spam_filtering>/data/set1/"

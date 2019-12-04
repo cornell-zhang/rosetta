@@ -17,3 +17,4 @@ add_files -tb ./imageLib/RefCntMem.cpp -cflags "-I./imageLib"
 
 # define simulation arguments
 set sim_args "-p <absolute_path_to_dataset_folder> -o out.flo"
+# example "-p <path_to_optical_flow>/datasets/tennis/ -o out.flo"

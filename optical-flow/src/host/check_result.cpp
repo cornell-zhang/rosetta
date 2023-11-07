@@ -10,6 +10,7 @@
 #include <string>
 #include <cmath>
 #include <fstream>
+#include <iostream>
 
 #include "typedefs.h"
 #include "../../imageLib/imageLib.h"

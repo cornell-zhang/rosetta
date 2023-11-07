@@ -12,6 +12,7 @@
 #include "image.h"
 #include "typedefs.h"
 #include <fstream>
+#include <iostream>
 
 void check_results(int &result_size, 
                    int result_x[RESULT_SIZE], 

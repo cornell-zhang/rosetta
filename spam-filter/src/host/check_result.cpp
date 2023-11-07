@@ -7,6 +7,7 @@
 /*===============================================================*/
 
 #include <fstream>
+#include <iostream>
 #include "typedefs.h"
 
 // data structure only used in this file

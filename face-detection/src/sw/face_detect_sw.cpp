@@ -96,7 +96,7 @@ void face_detect_sw
     MySize winSize = { myRound(winSize0.width*factor), myRound(winSize0.height*factor) };
 
     /* size of the image scaled down */
-    MySize sz = { (IMAGE_WIDTH/factor), (IMAGE_HEIGHT/factor) };
+    MySize sz = { int(IMAGE_WIDTH/factor), int(IMAGE_HEIGHT/factor) };
     
     height = sz.height;
     width  = sz.width;
